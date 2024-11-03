@@ -1,0 +1,39 @@
+Version 1:
+Customer(customer_id, user_name, email, password, created_time) PK: customer_id
+phone plans(plan_id, plan_name, rate_per_MBs, rate_per_minute) pk: plan_id
+subscription(subcription_id, customer_id, plan_id, start_date. end_date, auto_renew) pk:subcription_id; FK:customer_id
+call log(call_id, customer_id, plan_id, start_time, end_time, duration) PK:call_id; FK: customer_id,plan_id
+Billing(billing_id, customer_id, month, total_calls, total_due) PK: billing_id; FK:customer_id
+Bank Account(bank_account_id,customer_id, card_number, name, exp_date, cvv, balance) PK:bank_account_id, card_number; FK:customer_id
+
+
+Version 2:
+Customer( customer_id, user_name, email, password, created_time) 
+PK: customer_id
+
+phone plans( plan_id, plan_name, rate_per_MBs, rate_per_minute, plan_type[post-paid,prepaid]) 
+pk: plan_id
+
+subscription( subcription_id, customer_id, plan_id, start_date. end_date, prepaid_balance, auto_renew) 
+FK:customer_id; pk:subcription_id, {customer_id, plan_id, start_date}
+
+call log( call_id, subcription_id, start_time, end_time, duration, cost) 
+FK: customer_id,plan_id; PK:call_id, subcription_id
+
+data session(session_id, subcription_id, start_time, end_time, data_used_mb, cost)
+FK: subcription_id; PK: session_id, subcription_id
+
+Billing( billing_id, customer_id, month, total_calls, total_data total_due) 
+FK:customer_id; PK: billing_id, {customer_id, month}
+
+Bank Account( bank_account_id,customer_id, card_number, name, exp_date, cvv, balance) 
+FK:customer_id; PK:bank_account_id, {customer_id, card_number}
+
+Receipt( receipt_id, subcription_id, billing_id, transaction_type['recharge','payment'], ammount, payment_method, transaction_date)
+FK:subcription_id, billing_id; PK: receipt_id,
+
+**** Add prepaid and postpaid
+**** Billing table only for postpaid
+**** prepaid_balance is NULL for postpaid customer
+**** cost in Cal Log and data session deduct in prepaid_balance and add in billing for postpaid
+**** In Receipt table, subcription_id for prepaid and billing_id for postpaid 

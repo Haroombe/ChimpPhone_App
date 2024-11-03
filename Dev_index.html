@@ -29,55 +29,99 @@
             <table>
                 <thead>
                     <tr>
-                        <th>User ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
+                        <th>customer_id</th>
+                        <th>user_name</th>
+                        <th>email</th>
+                        <th>password</th>
+                        <th>created_time</th>
                     </tr>
                 </thead>
-                <tbody id="customerTable"></tbody>
+                <tbody id="customer"></tbody>
             </table>
         </div>
 
         <!-- Call History Table -->
         <div>
-            <h2>Call History List</h2>
+            <h2>Call Log</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Call ID</th>
-                        <th>Plan</th>
-                        <th>Duration</th>
+                        <th>call_id</th>
+                        <th>subcription_id</th>
                         <th>Time Start</th>
                         <th>Time End</th>
+                        <th>duration</th>
+                        <th>cost</th>
                     </tr>
                 </thead>
-                <tbody id="courseTable"></tbody>
+                <tbody id="call log"></tbody>
             </table>
         </div>
 
-        <!-- Account Billing -->
+        <!-- Subscription table-->
         <div>
-            <h2>Billing List</h2>
+            <h2>Subscription</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>User ID</th>
-                        <th>Total Calls</th>
-                        <th>Total Due</th>
+                        <th>subscription_id</th>
+                        <th>customer_id</th>
+                        <th>plan_id</th>
+                        <th>start_date</th>
+                        <th>end_date</th>
+                        <th>prepaid_balance</th>
+                        <th>auto_renew</th>
                     </tr>
                 </thead>
                 <tbody id="BillingTable"></tbody>
             </table>
         </div>
-    </div>
 
+        <!-- Postpaid Billing -->
+        <div>
+            <h2>Billing List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>billing_id</th>
+                        <th>customer_id</th>
+                        <th>month</th>
+                        <th>total_calls</th>
+                        <th>total_data</th>
+                        <th>total_Due</th>
+                    </tr>
+                </thead>
+                <tbody id="BillingTable"></tbody>
+            </table>
+        </div>
+
+        <!-- Bank Account-->
+        <div>
+            <h2>Bank Account</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>bank_account_id</th>
+                        <th>customer_id</th>
+                        <th>card_number</th>
+                        <th>name</th>
+                        <th>exp_date</th>
+                        <th>cvv</th>
+                        <th>balance</th>
+                    </tr>
+                </thead>
+                <tbody id="BillingTable"></tbody>
+            </table>
+        </div>
+
+    </div>
+    
     <div class="form-container">
          <!--Add customer form-->
         <div class="CRUD-container">
             <h2>Add Customer</h2>
-            <label for="userID">User ID</label>
-            <input type="text" id="userID" placeholder="Chimpanzee12">
+            <label for="userName">User name</label>
+            <input type="text" id="userID" placeholder="Chimpanzee">
         
             <label for="Customer_Email">Email</label>
             <input type="email" id="Customer_Email" placeholder="Email@example.com">
@@ -85,10 +129,10 @@
             <label for="Password">Password</label>
             <input type="text" id="Password" placeholder="Password">
 
-            <label for="Phone_Plan_1">Plan 1: $1/min</label>
+            <label for="Phone_Plan_1">Plan 1: Prepaid</label>
             <input type="checkbox" id="Phone_Plan_1">
 
-            <label for="Phone_Plan_2">Plan 2: $0.5/min</label>
+            <label for="Phone_Plan_2">Plan 2: Postpaid</label>
             <input type="checkbox" id="Phone_Plan_2">
 
             <button onclick="addCustomer()">Add Customer</button>
@@ -97,8 +141,8 @@
          <!--Update customer form-->
         <div class="CRUD-container">
             <h2>Update Customer</h2>
-            <label for="userID_Update">User ID</label>
-            <input type="text" id="userID_Update" placeholder="Chimpanzee12">
+            <label for="customerID_Update">customer ID</label>
+            <input type="number" id="userID_Update" placeholder="12345">
 
             <label for="Customer_Email_Update">New Email</label>
             <input type="email" id="Customer_Email_Update" placeholder="Email@example.com">
@@ -107,10 +151,10 @@
             <input type="text" id="Password_Update" placeholder="Password">
 
             <p>Change Phone plan:</p>
-            <label for="Phone_Plan_1_new">Plan 1: $1/min</label>
+            <label for="Phone_Plan_1_new">Plan 1: Prepaid</label>
             <input type="checkbox" id="Phone_Plan_1_new">
 
-            <label for="Phone_Plan_2_new">Plan 2: $0.5/min</label>
+            <label for="Phone_Plan_2_new">Plan 2: Postpaid</label>
             <input type="checkbox" id="Phone_Plan_2_new">
 
             <button onclick="updateCustomer()">Update Customer</button>
@@ -118,7 +162,7 @@
         <!--Delete customer form-->
         <div class="CRUD-container">
             <h2>Delete Customer</h2>
-            <input type="text" id="Customer_Delete" placeholder="Chimpanzee12">
+            <input type="number" id="customerID_Delete" placeholder="12345">
             <button onclick="deleteCustomer()">Delete Customer</button>
         </div>
     </div>
@@ -128,8 +172,8 @@
         <div class="CRUD-container">
             <!--vvvvvvvv-->
             <h2>Add Call</h2>
-            <label for="User_ID_Add_Call">User ID</label>
-            <input type="text" id="User_ID_Add_Call" placeholder="Chimpanzee12">
+            <label for="customerID_Add_Call">Customer ID</label>
+            <input type="number" id="customerID_Add_Call" placeholder="12345">
 
             <label for="Time_Start_Add">Time Call Start</label>
             <input type="datetime" id="Time_Start_Add" placeholder="YYYY-MM-DDTHH:MM" onchange="calculateCallDuration('Time_Start_Add','Time_End_Add','Total_time_Add')">
@@ -143,6 +187,7 @@
             <button onclick="addCall()">Add Call</button>
         </div>
 
+        <!--Update call form-->
         <div class="CRUD-container">
             <!--vvvvvvvvvvv-->
             <h2>Update Call</h2>
@@ -160,6 +205,8 @@
 
             <button onclick="updateCall()">Update Call</button>
         </div>
+
+        <!--Delete call form-->
         <div class="CRUD-container">
             <!--vvvvvvvvvvv-->
             <h2>Delete Call</h2>
@@ -171,20 +218,47 @@
 
     <div class="form-container">    
         <div class = "Transaction-container">
-            <h2>Update Customer Billing (Payment)</h2>
-            <label for="User_ID_Billing">User ID</label>
-            <input type="text" id="User_ID_Billing">
+            <h2>Update Postpaid Customer Billing (Payment)</h2>
+            <label for="customerID_Billing">Customer ID</label>
+            <input type="number" id="customerID_Billing">
             <label for="Month_Billing">Month</label>
             <input type="month" id="Month_Billing">
+            <label for="card_number">Card Number</label>
+            <input type="text" id="card_number" placeholder="################">
+            <label for="card_name">Name on card</label>
+            <input type="text" id="card_name" placeholder="Chimpanzee">
+            <label for="exp">EXP Date</label>
+            <input type="date" id="exp">
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" placeholder="###">
             <button onclick="BillingPayment()">Pay</button>
         </div>
+    </div>
 
+    <div class="form-container">    
+        <div class = "Transaction-container">
+            <h2>Update Prepaid Customer Billing (Charge)</h2>
+            <label for="customerID_Charge">Customer ID</label>
+            <input type="number" id="customerID_Charge">
+            <label for="amount_charge">Amount</label>
+            <input type="number" id="amount_charge">
+            <label for="card_number_charge">Card Number</label>
+            <input type="text" id="card_number_charge" placeholder="################">
+            <label for="card_name_charge">Name on card</label>
+            <input type="text" id="card_name_charge" placeholder="Chimpanzee">
+            <label for="exp">EXP Date</label>
+            <input type="date_charge" id="exp_charge">
+            <label for="cvv_charge">CVV</label>
+            <input type="text" id="cvv_charge" placeholder="###">
+            <button onclick="SubcriptionCharge()">Pay</button>
+        </div>
+    </div>
     <!--    <div class = "Transaction-container">
             <h2>Plan Filter</h2>
-            <label for="Phone_Plan_1_new">Plan 1: $1/min</label>
+            <label for="Phone_Plan_1_new">Plan 1: Prepaid</label>
             <input type="checkbox" id="Phone_Plan_1_new">
 
-            <label for="Phone_Plan_2_new">Plan 2: $0.5/min</label>
+            <label for="Phone_Plan_2_new">Plan 2: Postpaid</label>
             <input type="checkbox" id="Phone_Plan_2_new">
 
             <button onclick="Phone_Plan_filter()">Get</button>
@@ -253,7 +327,7 @@
 
     async function addCustomer() {
         try {
-            const userID = document.getElementById("userID").value;
+            const userID = document.getElementById("userName").value;
             const email = document.getElementById("Customer_Email").value;
             const password = document.getElementById('Password').value;
             const plan1 = document.getElementById("Phone_Plan_1").checked;
@@ -279,7 +353,7 @@
 
     async function updateCustomer() {
         try {
-        const userID = document.getElementById("userID_Update").value;
+        const userID = document.getElementById("customerID_Update").value;
         const email = document.getElementById("Customer_Email_Update").value;
         const password = document.getElementById("Password_Update").value;
         const plan1 = document.getElementById("Phone_Plan_1_new").checked;
@@ -306,7 +380,7 @@
 
     async function deleteCustomer() {
         try {
-            const userID = document.getElementById("Customer_Delete").value;
+            const userID = document.getElementById("customerID_Delete").value;
             
             await fetch(`${CUSTOMER_API_BASE_URL}/${userID}`,{
                     method: 'DELETE',
@@ -353,7 +427,7 @@
     }
 
     async function addCall() {
-        const userID = document.getElementById("User_ID_Add_Call").value;
+        const userID = document.getElementById("customerID_Add_Call").value;
         const startTime = document.getElementById("Time_Start_Add").value;
         const endTime = document.getElementById("Time_End_Add").value;
         const TotalTime = document.getElementById("Total_time_Add").value;
@@ -419,9 +493,26 @@
     //Transaction part
     async function BillingPayment() {
         try{
-        const Customer_ID = document.getElementById("User_ID_Billing").value;
-        const Month = document.getElementById("Month_Billing").value;
-        const Customer_Payment = {Customer_ID,Month};
+            const Customer_ID = document.getElementById("customerID_Billing").value;
+            const Month = document.getElementById("Month_Billing").value;
+            const Card_number = document.getElementById("card_number").value;
+            const Card_name = document.getElementById("card_name").value;
+            const EXP = document.getElementById("exp").value;
+            const CVV = document.getElementById("cvv").value
+
+            // Validate Card
+            if (!validateCardNumber(Card_number)) {
+                throw new Error("Invalid card number");
+            }
+            if (!validateExpDate(EXP)) {
+                throw new Error("Expired card date");
+            }
+            if (!validateCVV(CVV)) {
+                throw new Error("Invalid CVV");
+            }
+
+            const Customer_Payment = {Customer_ID,Month,Card_number,Card_name,EXP,CVV};
+
         await fetch(`${BILLING_API_URL}/${Customer_ID}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -435,7 +526,75 @@
             console.error("Error:", error);
             alert("Payment Failed");
         }
-        }
+    }
 
+    async function SubcriptionCharge() {
+        try{
+            const Customer_ID = document.getElementById("customerID_Charge").value;
+            const Amount = document.getElementById("amount_charge").value;
+            const Card_number = document.getElementById("card_number_charge").value;
+            const Card_name = document.getElementById("card_name_charge").value;
+            const EXP = document.getElementById("exp_charge").value;
+            const CVV = document.getElementById("cvv_charge").value
+
+            // Validate Card
+            if (!validateCardNumber(Card_number)) {
+                throw new Error("Invalid card number");
+            }
+            if (!validateExpDate(EXP)) {
+                throw new Error("Expired card date");
+            }
+            if (!validateCVV(CVV)) {
+                throw new Error("Invalid CVV");
+            }
+
+            const Customer_Charge = {Customer_ID,Amount,Card_number,Card_name,EXP,CVV};
+
+        await fetch(`${BILLING_API_URL}/${Customer_ID}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(Customer_Charge)
+        });
+            if(response.ok){
+                    alert("Payment processed successfully")
+                    fetchCallHistory();
+                }   
+        } catch (error){
+            console.error("Error:", error);
+            alert("Payment Failed");
+        }
+    }
+
+    // Luhn Algorithm 
+    function validateCardNumber(number) {
+        number = number.replace(/\D/g, ""); 
+        let sum = 0;
+        let shouldDouble = false;
+        for (let i = number.length - 1; i >= 0; i--) {
+            let digit = parseInt(number.charAt(i));
+
+            if (shouldDouble) {
+                digit *= 2;
+                if (digit > 9) digit -= 9;
+            }
+
+            sum += digit;
+            shouldDouble = !shouldDouble;
+    }
+    return (sum % 10) === 0 && number.length >= 13 && number.length <= 19;
+    }
+
+    // Validate expiration date
+    function validateExpDate(date) {
+        const currentDate = new Date();
+        const inputDate = new Date(date);
+
+        return inputDate > currentDate;
+    }
+
+    // Validate CVV (3-4 digits)
+    function validateCVV(cvv) {
+        return /^\d{3,4}$/.test(cvv);
+    }
 </script>
 </html>
