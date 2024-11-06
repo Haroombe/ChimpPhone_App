@@ -36,7 +36,7 @@
                         <th>created_time</th>
                     </tr>
                 </thead>
-                <tbody id="customer"></tbody>
+                <tbody id="customerTable"></tbody>
             </table>
         </div>
 
@@ -52,9 +52,11 @@
                         <th>Time End</th>
                         <th>duration</th>
                         <th>cost</th>
+                        <th>called_number</th>
+                        <th>out_of_country</th>
                     </tr>
                 </thead>
-                <tbody id="call log"></tbody>
+                <tbody id="CallLogTable"></tbody>
             </table>
         </div>
 
@@ -73,7 +75,7 @@
                         <th>auto_renew</th>
                     </tr>
                 </thead>
-                <tbody id="BillingTable"></tbody>
+                <tbody id="subscriptionTable"></tbody>
             </table>
         </div>
 
@@ -84,14 +86,16 @@
                 <thead>
                     <tr>
                         <th>billing_id</th>
-                        <th>customer_id</th>
+                        <th>subscription_id</th>
                         <th>month</th>
+                        <th>due_date</th>
                         <th>total_calls</th>
                         <th>total_data</th>
                         <th>total_Due</th>
+                        <th>is_paid</th>
                     </tr>
                 </thead>
-                <tbody id="BillingTable"></tbody>
+                <tbody id="billingTable"></tbody>
             </table>
         </div>
 
@@ -110,17 +114,50 @@
                         <th>balance</th>
                     </tr>
                 </thead>
-                <tbody id="BillingTable"></tbody>
+                <tbody id="CustomerBankTable"></tbody>
+            </table>
+        </div>
+
+        <!-- Transaction Table-->
+        <div>
+            <h2>transaction</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>transaction_id</th>
+                        <th>customer_id</th>
+                        <th>amount</th>
+                        <th>transaction_date</th>
+                        <th>transaction_type</th>
+                        <th>payment_method</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionTable"></tbody>
             </table>
         </div>
 
     </div>
     
     <div class="form-container">
+        <!--For table create-->
+        <div class="Transaction-container">
+            <h2>Create database</h2>
+            <button onclick="createTables()">Create Tables</button>
+        </div>
+        <!--For generate value-->
+        <div class="Transaction-container">
+            <h2>Fill Database</h2>
+            <button onclick="FillDummy()">Fill Data</button>
+        </div>
+        <!--For Deleting Tables-->
+        <div class="Transaction-container">
+            <h2>Delete Every Datable Elements (for testing)</h2>
+            <button onclick="tablesDelete()">Delete Data</button>
+        </div>
          <!--Add customer form-->
         <div class="CRUD-container">
             <h2>Add Customer</h2>
-            <label for="userName">User name</label>
+            <label for="userID">User name</label>
             <input type="text" id="userID" placeholder="Chimpanzee">
         
             <label for="Customer_Email">Email</label>
@@ -135,6 +172,17 @@
             <label for="Phone_Plan_2">Plan 2: Postpaid</label>
             <input type="checkbox" id="Phone_Plan_2">
 
+            <label for="card_number_new">Card Number</label>
+            <input type="text" id="card_number_new" placeholder="################">
+
+            <label for="card_name_new">Name on card</label>
+            <input type="text" id="card_name_new" placeholder="Chimpanzee">
+
+            <label for="exp_new">EXP Date</label>
+            <input type="date" id="exp_new">
+
+            <label for="cvv_new">CVV</label>
+            <input type="text" id="cvv_new" placeholder="###">
             <button onclick="addCustomer()">Add Customer</button>
         </div>
 
@@ -142,38 +190,41 @@
         <div class="CRUD-container">
             <h2>Update Customer</h2>
             <label for="customerID_Update">customer ID</label>
-            <input type="number" id="userID_Update" placeholder="12345">
+            <input type="number" id="customerID_Update" placeholder="12345">
 
             <label for="Customer_Email_Update">New Email</label>
             <input type="email" id="Customer_Email_Update" placeholder="Email@example.com">
 
             <label for="Password_Update">New Password</label>
             <input type="text" id="Password_Update" placeholder="Password">
-
+            <!--
             <p>Change Phone plan:</p>
             <label for="Phone_Plan_1_new">Plan 1: Prepaid</label>
             <input type="checkbox" id="Phone_Plan_1_new">
 
             <label for="Phone_Plan_2_new">Plan 2: Postpaid</label>
-            <input type="checkbox" id="Phone_Plan_2_new">
+            <input type="checkbox" id="Phone_Plan_2_new">-->
 
             <button onclick="updateCustomer()">Update Customer</button>
         </div>
-        <!--Delete customer form-->
+        <!--Delete customer form
         <div class="CRUD-container">
             <h2>Delete Customer</h2>
             <input type="number" id="customerID_Delete" placeholder="12345">
             <button onclick="deleteCustomer()">Delete Customer</button>
-        </div>
+        </div>-->
     </div>
 
     <div class="form-container">
-         <!--Add call form-->
-        <div class="CRUD-container">
+         <!--Add call form (A transaction since it invole too many tables)-->
+        <div class="Transaction-container">
             <!--vvvvvvvv-->
             <h2>Add Call</h2>
             <label for="customerID_Add_Call">Customer ID</label>
             <input type="number" id="customerID_Add_Call" placeholder="12345">
+
+            <label for="CalledNumber_Add_Call">Called number</label>
+            <input type="text" id="CalledNumber_Add_Call" placeholder="123 456 7890">
 
             <label for="Time_Start_Add">Time Call Start</label>
             <input type="datetime" id="Time_Start_Add" placeholder="YYYY-MM-DDTHH:MM" onchange="calculateCallDuration('Time_Start_Add','Time_End_Add','Total_time_Add')">
@@ -181,15 +232,14 @@
             <label for="Time_End_Add">Time Call End</label>
             <input type="datetime" id="Time_End_Add" placeholder="YYYY-MM-DDTHH:MM" onchange="calculateCallDuration('Time_Start_Add','Time_End_Add','Total_time_Add')">
 
-            <label for="Total_time_Add">Total Time (HH:MM)</label>
+            <label for="Total_time_Add">Total Time (Min)</label>
             <input type="text" id="Total_time_Add" placeholder="00:00" readonly>
 
             <button onclick="addCall()">Add Call</button>
         </div>
 
-        <!--Update call form-->
+        <!--Update call form
         <div class="CRUD-container">
-            <!--vvvvvvvvvvv-->
             <h2>Update Call</h2>
             <label for="Call_ID_Update">Call_ID</label>
             <input type="text" id="Call_ID_Update" placeholder="####">
@@ -200,20 +250,19 @@
             <label for="Time_End_Update">Time Call End</label>
             <input type="datetime" id="Time_End_Update" placeholder="YYYY-MM-DDTHH:MM" onchange="calculateCallDuration('Time_Start_Update','Time_End_Update','Total_time_Update')">
 
-            <label for="Total_time_Update">Total Time (HH:MM)</label>
+            <label for="Total_time_Update">Total Time (Min)</label>
             <input type="text" id="Total_time_Update" placeholder="00:00" readonly>
 
             <button onclick="updateCall()">Update Call</button>
-        </div>
+        </div> -->
 
-        <!--Delete call form-->
-        <div class="CRUD-container">
-            <!--vvvvvvvvvvv-->
+        <!--Delete call form
+        <div class="Transaction-container">
             <h2>Delete Call</h2>
             <label for="Call_ID_Delete">Call_ID</label>
             <input type="text" id="Call_ID_Delete" placeholder="####">
             <button onclick="deleteCall()">Delete Call</button>
-        </div>
+        </div>-->
     </div>
 
     <div class="form-container">    
@@ -238,18 +287,24 @@
     <div class="form-container">    
         <div class = "Transaction-container">
             <h2>Update Prepaid Customer Billing (Charge)</h2>
-            <label for="customerID_Charge">Customer ID</label>
-            <input type="number" id="customerID_Charge">
+            <label for="subscriptionID_Charge">Customer ID</label>
+            <input type="number" id="subscriptionID_Charge">
+
             <label for="amount_charge">Amount</label>
             <input type="number" id="amount_charge">
+
             <label for="card_number_charge">Card Number</label>
             <input type="text" id="card_number_charge" placeholder="################">
+
             <label for="card_name_charge">Name on card</label>
             <input type="text" id="card_name_charge" placeholder="Chimpanzee">
-            <label for="exp">EXP Date</label>
-            <input type="date_charge" id="exp_charge">
+
+            <label for="exp_charge">EXP Date</label>
+            <input type="date" id="exp_charge">
+
             <label for="cvv_charge">CVV</label>
             <input type="text" id="cvv_charge" placeholder="###">
+
             <button onclick="SubcriptionCharge()">Pay</button>
         </div>
     </div>
@@ -291,31 +346,120 @@
         // Convert ms to minutes
         const differenceInMinutes = Math.floor(differenceInMs / 60000); 
         const hours = Math.floor(differenceInMinutes / 60);
-        const minutes = differenceInMinutes % 60;
+        const minutes = differenceInMinutes % 60 + hours * 60;
 
         // Display the result in HH:MM
-        document.getElementById(`${Total}`).value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        document.getElementById(`${Total}`).value = `${minutes.toString().padStart(2, '0')}`;
     }
 
     //API end point
-    const CUSTOMER_API_BASE_URL = "http://localhost:5000/customer";
-    const CALLS_API_URL = "http://localhost:3000/calls";
-    const BILLING_API_URL = "http://localhost:3000/billing";
+    const CUSTOMER_API_BASE_URL = "http://localhost:5501/customer";
+    const SUB_API_URL = "http://localhost:5501/subscription";
+    const CALLS_API_URL = "http://localhost:5501/calls";
+    const BILLING_API_URL = "http://localhost:5501/postpaid";
+    const CHARGE_API_URL = "http://localhost:5501/prepaid"
+    const BANK_API_URL = "http://localhost:5501/bank";
+    const TRANSACTION_APT_URL = "http://localhost:5501/transaction";
 
-    //CRUD operation for customer
+    //Create table
+    async function createTables() {
+    try {
+        const response = await fetch('/createtables', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to create tables');
+        }
+        
+        const data = await response.json();
+        alert(data.message);
+    } catch (error) {
+        console.error('Error creating tables:', error);
+        alert('Error creating tables');
+    }
+    }
+
+    //fill tables
+    async function FillDummy() {
+    try {
+        const response = await fetch('/api/Fill', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fill tables');
+        }
+        
+        const data = await response.json();
+        alert(data.message);
+
+        fetchCustomer();
+        fetchSubs();
+        fetchCallHistory();
+        fetchBank();
+        fetchBilling();
+        fetchTrans();
+    } catch (error) {
+        console.error('Error filling tables:', error);
+        alert('Error filling tables');
+    }
+    }
+    //Deleting every tables (for testing purpose)
+    async function tablesDelete() {
+        // Show confirmation dialog
+        const userConfirmed = confirm("Are you sure you want to delete every data?");
+            
+        if (userConfirmed) {
+            try {
+                const response = await fetch('/api/delete', {
+                     method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                    
+                if (!response.ok) {
+                    throw new Error('Failed to delete the data');
+                    }
+                    
+                    alert("Data deleted successfully");
+                    fetchCustomer();
+                    fetchSubs();
+                    fetchCallHistory();
+                    fetchBank();
+                    fetchBilling();
+                    fetchTrans();
+                } catch (error) {
+                    console.error("Error deleting data:", error);
+                    alert("Error deleting data");
+                }
+        } else {
+            alert("Deletion cancelled");
+        }
+    }
+    //Add operation for customer
     async function fetchCustomer() {
         try {
             //TODO Add URL
-            const response = await fetch('CUSTOMER_API_BASE_URL');
+            const response = await fetch(`${CUSTOMER_API_BASE_URL}`);
             const students = await response.json();
             const table = document.getElementById('customerTable');
             table.innerHTML = '';
             students.forEach(customer => {
                 const row = 
                     `<tr>
-                        <td>${customer.userID}</td>
-                        <td>${customer.name || 'N/A'}</td>
+                        <td>${customer.customer_id}</td>
+                        <td>${customer.user_name}</td>
                         <td>${customer.email}</td>
+                        <td>${customer.password}</td>
+                        <td>${customer.created_time}</td>
                     </tr>`;
                 table.innerHTML += row;
             });
@@ -324,27 +468,99 @@
                 alert("Failed Fetching Customer");
             };
     }
+    //Fetch sub table
+    async function fetchSubs() {
+        try {
+            const response = await fetch(`${SUB_API_URL}`);
+            const subs = await response.json();
+            const table = document.getElementById('subscriptionTable');
+            table.innerHTML = '';
+            subs.forEach(subscription => {
+                const row = 
+                    `<tr>
+                        <td>${subscription.subscription_id}</td>
+                        <td>${subscription.customer_id}</td>
+                        <td>${subscription.plan_id}</td>
+                        <td>${subscription.start_date}</td>
+                        <td>${subscription.end_date}</td>
+                        <td>${subscription.prepaid_balance}</td>
+                        <td>${subscription.auto_renew}</td>
+                    </tr>`;
+                table.innerHTML += row;
+            });
+        }catch (error) {
+                console.error("Error:", error);
+                alert("Failed Fetching Subscription");
+            };
+    }
+
+    async function fetchTrans() {
+        try{
+        const response = await fetch(`${TRANSACTION_APT_URL}`);
+        const trans = await response.json();
+        const table = document.getElementById('transactionTable');
+        table.innerHTML = '';
+            trans.forEach(transaction => {
+                const row = 
+                    `<tr>
+                        <td>${transaction.transaction_id}</td>
+                        <td>${transaction.customer_id}</td>
+                        <td>${transaction.amount}</td>
+                        <td>${transaction.transaction_date}</td>
+                        <td>${transaction.transaction_type}</td>
+                        <td>${transaction.payment_method}</td>
+                    </tr>`;
+                table.innerHTML += row;
+            });
+        }catch (error) {
+                console.error("Error:", error);
+                alert("Failed Fetching Transaction");
+        };
+    };
 
     async function addCustomer() {
         try {
-            const userID = document.getElementById("userName").value;
+            const userID = document.getElementById("userID").value;
             const email = document.getElementById("Customer_Email").value;
             const password = document.getElementById('Password').value;
             const plan1 = document.getElementById("Phone_Plan_1").checked;
             const plan2 = document.getElementById("Phone_Plan_2").checked;
-            const newCustomer = { userID, email, password, plan1, plan2 };
-            await fetch(`${CUSTOMER_API_BASE_URL}`,{
+            const Card_number = document.getElementById("card_number_new").value;
+            const Card_name = document.getElementById("card_name_new").value;
+            const EXP = document.getElementById("exp_new").value;
+            const CVV = document.getElementById("cvv_new").value
+
+            // Validate Card
+            if (!validateCardNumber(Card_number)) {
+                throw new Error("Invalid card number");
+            }
+            if (!validateExpDate(EXP)) {
+                throw new Error("Expired card date");
+            }
+            if (!validateCVV(CVV)) {
+                throw new Error("Invalid CVV");
+            }
+            
+            const newCustomer = { userID, email, password, plan1, plan2, Card_number, Card_name,EXP,CVV };
+            const response = await fetch(`${CUSTOMER_API_BASE_URL}`,{
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(newCustomer)
             });
-            if(response.ok){
+            if(!response.ok){
+                throw new Error("failed adding customer");
+            }
+            else{
                 alert("New customer added successfully")
                 // refresh table on screen
                 fetchCustomer();
                 fetchCallHistory();
+                fetchBank();
+                fetchSubs();
+                fetchBilling();
+                fetchTrans();
+                
             }
-            
         } catch (error){
             console.error("Error:", error);
             alert("Failed adding Customer");
@@ -353,31 +569,31 @@
 
     async function updateCustomer() {
         try {
-        const userID = document.getElementById("customerID_Update").value;
-        const email = document.getElementById("Customer_Email_Update").value;
-        const password = document.getElementById("Password_Update").value;
-        const plan1 = document.getElementById("Phone_Plan_1_new").checked;
-        const plan2 = document.getElementById("Phone_Plan_2_new").checked;
+            const userID = document.getElementById("customerID_Update").value;
+            const email = document.getElementById("Customer_Email_Update").value;
+            const password = document.getElementById("Password_Update").value;
+            /*
+            const plan1 = document.getElementById("Phone_Plan_1_new").checked;
+            const plan2 = document.getElementById("Phone_Plan_2_new").checked;
+            */
+            const updatedCustomer = {email, password};
 
-        const updatedCustomer = { email, password, plan1, plan2 };
-
-        await fetch(`${CUSTOMER_API_BASE_URL}/${userID}`,{
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(updatedCustomer)
-            });
-            if(response.ok){
-                alert("Customer updated successfully")
-                // refresh table on screen
-                fetchCustomer();
-                fetchCallHistory();
-            }   
+            const response = await fetch(`${CUSTOMER_API_BASE_URL}/${userID}`,{
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(updatedCustomer)
+                });
+                if(response.ok){
+                    alert("Customer updated successfully")
+                    // refresh table on screen
+                    fetchCustomer();
+                }   
         } catch (error){
             console.error("Error:", error);
             alert("Failed updating Customer");
         }
     }
-
+/*
     async function deleteCustomer() {
         try {
             const userID = document.getElementById("customerID_Delete").value;
@@ -397,23 +613,26 @@
                 alert("Failed deleting Customer");
             }
     }
-
+    */
     //Call operation
     async function fetchCallHistory() {
         try {
-            const response = await fetch(CALLS_API_URL);
+            const response = await fetch(`${CALLS_API_URL}`);
             if (response.ok) {
                 const calls = await response.json();
-                const table = document.getElementById("courseTable");
+                const table = document.getElementById("CallLogTable");
                 table.innerHTML = ''; // Clear previous rows
 
                 calls.forEach(call => {
                     const row = `<tr>
                                     <td>${call.call_id}</td>
-                                    <td>${call.plan}</td>
-                                    <td>${call.durationMinutes} min</td>
-                                    <td>${new Date(call.startTime).toLocaleString()}</td>
-                                    <td>${new Date(call.endTime).toLocaleString()}</td>
+                                    <td>${call.subscription_id}</td>
+                                    <td>${call.start_time}</td>
+                                    <td>${call.end_time}</td>
+                                    <td>${call.duration}</td>
+                                    <td>${call.cost}</td>
+                                    <td>${call.called_number}</td>
+                                    <td>${call.out_of_country}</td>
                                  </tr>`;
                     table.innerHTML += row;
                 });
@@ -428,9 +647,12 @@
 
     async function addCall() {
         const userID = document.getElementById("customerID_Add_Call").value;
+        const called_number = document.getElementById("CalledNumber_Add_Call").value;
         const startTime = document.getElementById("Time_Start_Add").value;
         const endTime = document.getElementById("Time_End_Add").value;
         const TotalTime = document.getElementById("Total_time_Add").value;
+
+        const newCall = {userID,called_number,startTime,endTime,TotalTime};
         try {
             const response = await fetch(`${CALLS_API_URL}`, {
                 method: "POST",
@@ -440,6 +662,10 @@
             if (response.ok) {
                 alert("Call added successfully");
                 fetchCallHistory(); // Refresh the call history
+                fetchBilling();
+                fetchBank();
+                fetchSubs();
+                fetchTrans();
             }
 
         } catch (error) {
@@ -447,7 +673,7 @@
             alert("Error adding a call");
         }
     }
-
+    /*
     async function updateCall() {
         try {
             const Call_ID = document.getElementById("Call_ID_Update").value;
@@ -470,8 +696,8 @@
             console.error("Error:", error);
             alert("Failed updating Call");
         }
-    }
-
+    }*/
+/*
     async function deleteCall() {
         try {
             const Call_ID = document.getElementById("Call_ID_Delete").value;
@@ -488,9 +714,61 @@
                 console.error("Error:", error);
                 alert("Failed deleting call");
             }
-    }
+    }*/
 
     //Transaction part
+    async function fetchBilling() {
+        try {
+            //TODO Add URL
+            const response = await fetch(`${BILLING_API_URL}`);
+            const students = await response.json();
+            const table = document.getElementById('billingTable');
+            table.innerHTML = '';
+            students.forEach(Billing => {
+                const row = 
+                    `<tr>
+                        <td>${Billing.billing_id}</td>
+                        <td>${Billing.customer_id}</td>
+                        <td>${Billing.month}</td>
+                        <td>${Billing.due_date}</td>
+                        <td>${Billing.total_calls}</td>
+                        <td>${Billing.total_data}</td>
+                        <td>${Billing.total_due}</td>
+                        <td>${Billing.is_paid}</td>
+                    </tr>`;
+                table.innerHTML += row;
+            });
+        }catch (error) {
+                console.error("Error:", error);
+                alert("Failed Fetching Billing");
+            };
+    }
+    //Fetch Bank table
+    async function fetchBank() {
+        try {
+            const response = await fetch(`${BANK_API_URL}`);
+            const students = await response.json();
+            const table = document.getElementById('CustomerBankTable');
+            table.innerHTML = '';
+            students.forEach(Bank_Account => {
+                const row = 
+                    `<tr>
+                        <td>${Bank_Account.bank_account_id}</td>
+                        <td>${Bank_Account.customer_id}</td>
+                        <td>${Bank_Account.card_number}</td>
+                        <td>${Bank_Account.name}</td>
+                        <td>${Bank_Account.exp_date}</td>
+                        <td>${Bank_Account.cvv}</td>
+                        <td>${Bank_Account.balance}</td>
+                    </tr>`;
+                table.innerHTML += row;
+            });
+        }catch (error) {
+                console.error("Error:", error);
+                alert("Failed Fetching Bank Account");
+            };
+    }
+
     async function BillingPayment() {
         try{
             const Customer_ID = document.getElementById("customerID_Billing").value;
@@ -513,15 +791,20 @@
 
             const Customer_Payment = {Customer_ID,Month,Card_number,Card_name,EXP,CVV};
 
-        await fetch(`${BILLING_API_URL}/${Customer_ID}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(Customer_Payment)
-        });
+            const response = await fetch(`${BILLING_API_URL}/${Customer_ID}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(Customer_Payment)
+            });
             if(response.ok){
                     alert("Payment processed successfully")
-                    fetchCallHistory();
-                }   
+                    fetchSubs();
+                    fetchBilling();
+                    fetchBank();
+                    fetchTrans();
+            } else {
+            throw new Error("Payment failed on server");
+            }   
         } catch (error){
             console.error("Error:", error);
             alert("Payment Failed");
@@ -530,8 +813,8 @@
 
     async function SubcriptionCharge() {
         try{
-            const Customer_ID = document.getElementById("customerID_Charge").value;
-            const Amount = document.getElementById("amount_charge").value;
+            const Customer_ID = document.getElementById("subscriptionID_Charge").value;
+            const amount = document.getElementById("amount_charge").value;
             const Card_number = document.getElementById("card_number_charge").value;
             const Card_name = document.getElementById("card_name_charge").value;
             const EXP = document.getElementById("exp_charge").value;
@@ -548,16 +831,19 @@
                 throw new Error("Invalid CVV");
             }
 
-            const Customer_Charge = {Customer_ID,Amount,Card_number,Card_name,EXP,CVV};
+            const Customer_Charge = {Customer_ID, amount, Card_number,Card_name,EXP,CVV};
 
-        await fetch(`${BILLING_API_URL}/${Customer_ID}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(Customer_Charge)
-        });
+            const response = await fetch(`${CHARGE_API_URL}/${Customer_ID}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(Customer_Charge)
+            });
             if(response.ok){
                     alert("Payment processed successfully")
-                    fetchCallHistory();
+                    fetchSubs();
+                    fetchBilling();
+                    fetchBank();
+                    fetchTrans();
                 }   
         } catch (error){
             console.error("Error:", error);
