@@ -16,7 +16,7 @@ app.use('/api', Route);
 const pool = new Pool({
     user: 'ruuby',
     host: 'localhost',
-    database: 'Chimpphone',
+    database: 'chimpphone',
     password: 'Ruby0909@',
     port: 5432,
 });
