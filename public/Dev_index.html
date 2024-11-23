@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,19 +8,22 @@
     <link rel="stylesheet" href="/CSStyling/Dev_Style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Staatliches&family=Unica+One&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Staatliches&family=Unica+One&display=swap"
+        rel="stylesheet">
 
 </head>
+
 <body>
-     <!--Logo header-->
+    <!--Logo header-->
     <header class="logo-Bar">
         <div class="logo-title">
             <img src="/Icon/test.png">
             <div class="Title-container">
-                <h1>ChimpPhone</h1>
+                <h1>chimpphone</h1>
                 <p class="Slogan">Bananas for Connection</p>
             </div>
-            </div>
+        </div>
     </header>
 
     <div class="table-container">
@@ -137,7 +141,7 @@
         </div>
 
     </div>
-    
+
     <div class="form-container">
         <!--For table create-->
         <div class="Transaction-container">
@@ -149,17 +153,22 @@
             <h2>Fill Database</h2>
             <button onclick="FillDummy()">Fill Data</button>
         </div>
+        <!--For fetching value-->
+        <div class="Transaction-container">
+            <h2>Fetch Database Tables</h2>
+            <button onclick="fetchAllTables()">Fetch Data</button>
+        </div>
         <!--For Deleting Tables-->
         <div class="Transaction-container">
             <h2>Delete Every Datable Elements (for testing)</h2>
             <button onclick="tablesDelete()">Delete Data</button>
         </div>
-         <!--Add customer form-->
+        <!--Add customer form-->
         <div class="CRUD-container">
             <h2>Add Customer</h2>
             <label for="userID">User name</label>
             <input type="text" id="userID" placeholder="Chimpanzee">
-        
+
             <label for="Customer_Email">Email</label>
             <input type="email" id="Customer_Email" placeholder="Email@example.com">
 
@@ -186,7 +195,7 @@
             <button onclick="addCustomer()">Add Customer</button>
         </div>
 
-         <!--Update customer form-->
+        <!--Update customer form-->
         <div class="CRUD-container">
             <h2>Update Customer</h2>
             <label for="customerID_Update">customer ID</label>
@@ -216,7 +225,7 @@
     </div>
 
     <div class="form-container">
-         <!--Add call form (A transaction since it invole too many tables)-->
+        <!--Add call form (A transaction since it invole too many tables)-->
         <div class="Transaction-container">
             <!--vvvvvvvv-->
             <h2>Add Call</h2>
@@ -227,10 +236,12 @@
             <input type="text" id="CalledNumber_Add_Call" placeholder="123 456 7890">
 
             <label for="Time_Start_Add">Time Call Start</label>
-            <input type="datetime" id="Time_Start_Add" placeholder="YYYY-MM-DDTHH:MM" onchange="calculateCallDuration('Time_Start_Add','Time_End_Add','Total_time_Add')">
+            <input type="datetime" id="Time_Start_Add" placeholder="YYYY-MM-DDTHH:MM"
+                onchange="calculateCallDuration('Time_Start_Add','Time_End_Add','Total_time_Add')">
 
             <label for="Time_End_Add">Time Call End</label>
-            <input type="datetime" id="Time_End_Add" placeholder="YYYY-MM-DDTHH:MM" onchange="calculateCallDuration('Time_Start_Add','Time_End_Add','Total_time_Add')">
+            <input type="datetime" id="Time_End_Add" placeholder="YYYY-MM-DDTHH:MM"
+                onchange="calculateCallDuration('Time_Start_Add','Time_End_Add','Total_time_Add')">
 
             <label for="Total_time_Add">Total Time (Min)</label>
             <input type="text" id="Total_time_Add" placeholder="00:00" readonly>
@@ -265,8 +276,8 @@
         </div>-->
     </div>
 
-    <div class="form-container">    
-        <div class = "Transaction-container">
+    <div class="form-container">
+        <div class="Transaction-container">
             <h2>Update Postpaid Customer Billing (Payment)</h2>
             <label for="customerID_Billing">Customer ID</label>
             <input type="number" id="customerID_Billing">
@@ -284,8 +295,8 @@
         </div>
     </div>
 
-    <div class="form-container">    
-        <div class = "Transaction-container">
+    <div class="form-container">
+        <div class="Transaction-container">
             <h2>Update Prepaid Customer Billing (Charge)</h2>
             <label for="subscriptionID_Charge">Customer ID</label>
             <input type="number" id="subscriptionID_Charge">
@@ -318,8 +329,8 @@
 
             <button onclick="Phone_Plan_filter()">Get</button>
         </div>
-    </div>> -->  
-    
+    </div>> -->
+
 </body>
 
 <script>
@@ -329,7 +340,7 @@
         const endTime = document.getElementById(`${End}`).value;
         if (!startTime || !endTime) {
             // Clear total time if either is missing
-            document.getElementById(`${Total}`).value = ""; 
+            document.getElementById(`${Total}`).value = "";
             return;
         }
         const start = new Date(startTime);
@@ -344,7 +355,7 @@
             return;
         }
         // Convert ms to minutes
-        const differenceInMinutes = Math.floor(differenceInMs / 60000); 
+        const differenceInMinutes = Math.floor(differenceInMs / 60000);
         const hours = Math.floor(differenceInMinutes / 60);
         const minutes = differenceInMinutes % 60 + hours * 60;
 
@@ -363,83 +374,96 @@
 
     //Create table
     async function createTables() {
-    try {
-        const response = await fetch('/createtables', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error('Failed to create tables');
-        }
-        
-        const data = await response.json();
-        alert(data.message);
-    } catch (error) {
-        console.error('Error creating tables:', error);
-        alert('Error creating tables');
-    }
-    }
+        try {
+            const response = await fetch('/createtables', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
+            if (!response.ok) {
+                throw new Error('Failed to create tables');
+            }
+
+            const data = await response.json();
+            alert(data.message);
+        } catch (error) {
+            console.error('Error creating tables:', error);
+            alert('Error creating tables');
+        }
+    }
+    // 
+    async function fetchAllTables() {
+        try {
+            fetchCustomer();
+            fetchSubs();
+            fetchCallHistory();
+            fetchBank();
+            fetchBilling();
+            fetchTrans();
+        } catch (error) {
+            console.error('Error fetching tables:', error);
+            alert('Error fetching tables');
+        }
+    }
     //fill tables
     async function FillDummy() {
-    try {
-        const response = await fetch('/api/Fill', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error('Failed to fill tables');
-        }
-        
-        const data = await response.json();
-        alert(data.message);
+        try {
+            const response = await fetch('/api/Fill', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
-        fetchCustomer();
-        fetchSubs();
-        fetchCallHistory();
-        fetchBank();
-        fetchBilling();
-        fetchTrans();
-    } catch (error) {
-        console.error('Error filling tables:', error);
-        alert('Error filling tables');
-    }
+            if (!response.ok) {
+                throw new Error('Failed to fill tables');
+            }
+
+            const data = await response.json();
+            alert(data.message);
+
+            fetchCustomer();
+            fetchSubs();
+            fetchCallHistory();
+            fetchBank();
+            fetchBilling();
+            fetchTrans();
+        } catch (error) {
+            console.error('Error filling tables:', error);
+            alert('Error filling tables');
+        }
     }
     //Deleting every tables (for testing purpose)
     async function tablesDelete() {
         // Show confirmation dialog
         const userConfirmed = confirm("Are you sure you want to delete every data?");
-            
+
         if (userConfirmed) {
             try {
                 const response = await fetch('/api/delete', {
-                     method: 'DELETE',
+                    method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
-                    
+
                 if (!response.ok) {
                     throw new Error('Failed to delete the data');
-                    }
-                    
-                    alert("Data deleted successfully");
-                    fetchCustomer();
-                    fetchSubs();
-                    fetchCallHistory();
-                    fetchBank();
-                    fetchBilling();
-                    fetchTrans();
-                } catch (error) {
-                    console.error("Error deleting data:", error);
-                    alert("Error deleting data");
                 }
+
+                alert("Data deleted successfully");
+                fetchCustomer();
+                fetchSubs();
+                fetchCallHistory();
+                fetchBank();
+                fetchBilling();
+                fetchTrans();
+            } catch (error) {
+                console.error("Error deleting data:", error);
+                alert("Error deleting data");
+            }
         } else {
             alert("Deletion cancelled");
         }
@@ -453,7 +477,7 @@
             const table = document.getElementById('customerTable');
             table.innerHTML = '';
             students.forEach(customer => {
-                const row = 
+                const row =
                     `<tr>
                         <td>${customer.customer_id}</td>
                         <td>${customer.user_name}</td>
@@ -463,10 +487,10 @@
                     </tr>`;
                 table.innerHTML += row;
             });
-        }catch (error) {
-                console.error("Error:", error);
-                alert("Failed Fetching Customer");
-            };
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed Fetching Customer");
+        };
     }
     //Fetch sub table
     async function fetchSubs() {
@@ -476,7 +500,7 @@
             const table = document.getElementById('subscriptionTable');
             table.innerHTML = '';
             subs.forEach(subscription => {
-                const row = 
+                const row =
                     `<tr>
                         <td>${subscription.subscription_id}</td>
                         <td>${subscription.customer_id}</td>
@@ -488,20 +512,20 @@
                     </tr>`;
                 table.innerHTML += row;
             });
-        }catch (error) {
-                console.error("Error:", error);
-                alert("Failed Fetching Subscription");
-            };
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed Fetching Subscription");
+        };
     }
 
     async function fetchTrans() {
-        try{
-        const response = await fetch(`${TRANSACTION_APT_URL}`);
-        const trans = await response.json();
-        const table = document.getElementById('transactionTable');
-        table.innerHTML = '';
+        try {
+            const response = await fetch(`${TRANSACTION_APT_URL}`);
+            const trans = await response.json();
+            const table = document.getElementById('transactionTable');
+            table.innerHTML = '';
             trans.forEach(transaction => {
-                const row = 
+                const row =
                     `<tr>
                         <td>${transaction.transaction_id}</td>
                         <td>${transaction.customer_id}</td>
@@ -512,9 +536,9 @@
                     </tr>`;
                 table.innerHTML += row;
             });
-        }catch (error) {
-                console.error("Error:", error);
-                alert("Failed Fetching Transaction");
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed Fetching Transaction");
         };
     };
 
@@ -540,17 +564,17 @@
             if (!validateCVV(CVV)) {
                 throw new Error("Invalid CVV");
             }
-            
-            const newCustomer = { userID, email, password, plan1, plan2, Card_number, Card_name,EXP,CVV };
-            const response = await fetch(`${CUSTOMER_API_BASE_URL}`,{
+
+            const newCustomer = { userID, email, password, plan1, plan2, Card_number, Card_name, EXP, CVV };
+            const response = await fetch(`${CUSTOMER_API_BASE_URL}`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newCustomer)
             });
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error("failed adding customer");
             }
-            else{
+            else {
                 alert("New customer added successfully")
                 // refresh table on screen
                 fetchCustomer();
@@ -559,9 +583,9 @@
                 fetchSubs();
                 fetchBilling();
                 fetchTrans();
-                
+
             }
-        } catch (error){
+        } catch (error) {
             console.error("Error:", error);
             alert("Failed adding Customer");
         }
@@ -576,44 +600,44 @@
             const plan1 = document.getElementById("Phone_Plan_1_new").checked;
             const plan2 = document.getElementById("Phone_Plan_2_new").checked;
             */
-            const updatedCustomer = {email, password};
+            const updatedCustomer = { email, password };
 
-            const response = await fetch(`${CUSTOMER_API_BASE_URL}/${userID}`,{
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(updatedCustomer)
-                });
-                if(response.ok){
-                    alert("Customer updated successfully")
-                    // refresh table on screen
-                    fetchCustomer();
-                }   
-        } catch (error){
+            const response = await fetch(`${CUSTOMER_API_BASE_URL}/${userID}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedCustomer)
+            });
+            if (response.ok) {
+                alert("Customer updated successfully")
+                // refresh table on screen
+                fetchCustomer();
+            }
+        } catch (error) {
             console.error("Error:", error);
             alert("Failed updating Customer");
         }
     }
-/*
-    async function deleteCustomer() {
-        try {
-            const userID = document.getElementById("customerID_Delete").value;
-            
-            await fetch(`${CUSTOMER_API_BASE_URL}/${userID}`,{
-                    method: 'DELETE',
-                });
-                if(response.ok){
-                    alert("Customer deleted successfully")
-                    // refresh table on screen
-                    fetchCustomer();
-                    fetchCallHistory();
-                }
+    /*
+        async function deleteCustomer() {
+            try {
+                const userID = document.getElementById("customerID_Delete").value;
                 
-            } catch (error){
-                console.error("Error:", error);
-                alert("Failed deleting Customer");
-            }
-    }
-    */
+                await fetch(`${CUSTOMER_API_BASE_URL}/${userID}`,{
+                        method: 'DELETE',
+                    });
+                    if(response.ok){
+                        alert("Customer deleted successfully")
+                        // refresh table on screen
+                        fetchCustomer();
+                        fetchCallHistory();
+                    }
+                    
+                } catch (error){
+                    console.error("Error:", error);
+                    alert("Failed deleting Customer");
+                }
+        }
+        */
     //Call operation
     async function fetchCallHistory() {
         try {
@@ -652,7 +676,7 @@
         const endTime = document.getElementById("Time_End_Add").value;
         const TotalTime = document.getElementById("Total_time_Add").value;
 
-        const newCall = {userID,called_number,startTime,endTime,TotalTime};
+        const newCall = { userID, called_number, startTime, endTime, TotalTime };
         try {
             const response = await fetch(`${CALLS_API_URL}`, {
                 method: "POST",
@@ -697,24 +721,24 @@
             alert("Failed updating Call");
         }
     }*/
-/*
-    async function deleteCall() {
-        try {
-            const Call_ID = document.getElementById("Call_ID_Delete").value;
-            
-            await fetch(`${CALLS_API_URL}/${Call_ID}`,{
-                    method: 'DELETE',
-                });
-                if(response.ok){
-                    alert("Call deleted successfully");
-                    fetchCallHistory();
-                }
+    /*
+        async function deleteCall() {
+            try {
+                const Call_ID = document.getElementById("Call_ID_Delete").value;
                 
-            } catch (error){
-                console.error("Error:", error);
-                alert("Failed deleting call");
-            }
-    }*/
+                await fetch(`${CALLS_API_URL}/${Call_ID}`,{
+                        method: 'DELETE',
+                    });
+                    if(response.ok){
+                        alert("Call deleted successfully");
+                        fetchCallHistory();
+                    }
+                    
+                } catch (error){
+                    console.error("Error:", error);
+                    alert("Failed deleting call");
+                }
+        }*/
 
     //Transaction part
     async function fetchBilling() {
@@ -725,7 +749,7 @@
             const table = document.getElementById('billingTable');
             table.innerHTML = '';
             students.forEach(Billing => {
-                const row = 
+                const row =
                     `<tr>
                         <td>${Billing.billing_id}</td>
                         <td>${Billing.customer_id}</td>
@@ -738,10 +762,10 @@
                     </tr>`;
                 table.innerHTML += row;
             });
-        }catch (error) {
-                console.error("Error:", error);
-                alert("Failed Fetching Billing");
-            };
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed Fetching Billing");
+        };
     }
     //Fetch Bank table
     async function fetchBank() {
@@ -751,7 +775,7 @@
             const table = document.getElementById('CustomerBankTable');
             table.innerHTML = '';
             students.forEach(Bank_Account => {
-                const row = 
+                const row =
                     `<tr>
                         <td>${Bank_Account.bank_account_id}</td>
                         <td>${Bank_Account.customer_id}</td>
@@ -763,14 +787,14 @@
                     </tr>`;
                 table.innerHTML += row;
             });
-        }catch (error) {
-                console.error("Error:", error);
-                alert("Failed Fetching Bank Account");
-            };
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed Fetching Bank Account");
+        };
     }
 
     async function BillingPayment() {
-        try{
+        try {
             const Customer_ID = document.getElementById("customerID_Billing").value;
             const Month = document.getElementById("Month_Billing").value;
             const Card_number = document.getElementById("card_number").value;
@@ -789,30 +813,30 @@
                 throw new Error("Invalid CVV");
             }
 
-            const Customer_Payment = {Customer_ID,Month,Card_number,Card_name,EXP,CVV};
+            const Customer_Payment = { Customer_ID, Month, Card_number, Card_name, EXP, CVV };
 
             const response = await fetch(`${BILLING_API_URL}/${Customer_ID}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(Customer_Payment)
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(Customer_Payment)
             });
-            if(response.ok){
-                    alert("Payment processed successfully")
-                    fetchSubs();
-                    fetchBilling();
-                    fetchBank();
-                    fetchTrans();
+            if (response.ok) {
+                alert("Payment processed successfully")
+                fetchSubs();
+                fetchBilling();
+                fetchBank();
+                fetchTrans();
             } else {
-            throw new Error("Payment failed on server");
-            }   
-        } catch (error){
+                throw new Error("Payment failed on server");
+            }
+        } catch (error) {
             console.error("Error:", error);
             alert("Payment Failed");
         }
     }
 
     async function SubcriptionCharge() {
-        try{
+        try {
             const Customer_ID = document.getElementById("subscriptionID_Charge").value;
             const amount = document.getElementById("amount_charge").value;
             const Card_number = document.getElementById("card_number_charge").value;
@@ -831,21 +855,21 @@
                 throw new Error("Invalid CVV");
             }
 
-            const Customer_Charge = {Customer_ID, amount, Card_number,Card_name,EXP,CVV};
+            const Customer_Charge = { Customer_ID, amount, Card_number, Card_name, EXP, CVV };
 
             const response = await fetch(`${CHARGE_API_URL}/${Customer_ID}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(Customer_Charge)
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(Customer_Charge)
             });
-            if(response.ok){
-                    alert("Payment processed successfully")
-                    fetchSubs();
-                    fetchBilling();
-                    fetchBank();
-                    fetchTrans();
-                }   
-        } catch (error){
+            if (response.ok) {
+                alert("Payment processed successfully")
+                fetchSubs();
+                fetchBilling();
+                fetchBank();
+                fetchTrans();
+            }
+        } catch (error) {
             console.error("Error:", error);
             alert("Payment Failed");
         }
@@ -853,7 +877,7 @@
 
     // Luhn Algorithm 
     function validateCardNumber(number) {
-        number = number.replace(/\D/g, ""); 
+        number = number.replace(/\D/g, "");
         let sum = 0;
         let shouldDouble = false;
         for (let i = number.length - 1; i >= 0; i--) {
@@ -866,8 +890,8 @@
 
             sum += digit;
             shouldDouble = !shouldDouble;
-    }
-    return (sum % 10) === 0 && number.length >= 13 && number.length <= 19;
+        }
+        return (sum % 10) === 0 && number.length >= 13 && number.length <= 19;
     }
 
     // Validate expiration date
@@ -883,4 +907,5 @@
         return /^\d{3,4}$/.test(cvv);
     }
 </script>
+
 </html>

@@ -4,7 +4,7 @@ const { Pool } = require('pg');
 const pool = new Pool({
     user: 'ruuby',
     host: 'localhost',
-    database: 'Chimpphone',
+    database: 'chimpphone',
     password: 'Ruby0909@',
     port: 5432,
 });
@@ -110,7 +110,7 @@ router.post('/Fill', async (req, res) => {
             await client.query(`
                 INSERT INTO company_bank (account_name, account_number, routing_number, balance)
                 VALUES 
-                ('Chimpphone Corp', '555555555555', '123456789', 19400121313.00)`);
+                ('chimpphone Corp', '555555555555', '123456789', 19400121313.00)`);
 
             await client.query(`
                 INSERT INTO transaction (customer_id, amount, transaction_date, transaction_type, payment_method, billing_id)
