@@ -1,0 +1,104 @@
+**** Add prepaid and postpaid
+**** Billing table only for postpaid
+**** prepaid_balance is NULL for postpaid customer
+**** cost in Cal Log and data session deduct in prepaid_balance and add in billing for postpaid
+**** In Receipt table, subcription_id for prepaid and billing_id for postpaid 
+
+DDL:
+-- Customer Table
+CREATE TABLE customer (
+    customer_id SERIAL PRIMARY KEY,
+    user_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    created_time TIMESTAMP DEFAULT NOW()
+);
+
+-- Phone Plans Table
+CREATE TABLE phone_plans (
+    plan_id SERIAL PRIMARY KEY,
+    plan_name VARCHAR(50) NOT NULL,
+    rate_per_MBs DECIMAL(10, 2) NOT NULL,
+    rate_per_minute DECIMAL(10, 2) NOT NULL,
+    plan_type VARCHAR(10) CHECK (plan_type IN ('postpaid', 'prepaid'))
+);
+
+-- Subscription Table
+CREATE TABLE subscription (
+    subscription_id SERIAL PRIMARY KEY,
+    customer_id INT REFERENCES Customer(customer_id) ON DELETE CASCADE,
+    plan_id INT REFERENCES phone_plans(plan_id) ON DELETE CASCADE,
+    start_date DATE NOT NULL,
+    end_date DATE,
+    prepaid_balance DECIMAL(10, 2) DEFAULT 0,
+    auto_renew BOOLEAN DEFAULT FALSE,
+    UNIQUE (customer_id, plan_id, start_date)
+);
+
+-- Call Log Table
+CREATE TABLE call_log (
+    call_id SERIAL PRIMARY KEY,
+    subscription_id INT REFERENCES subscription(subscription_id) ON DELETE CASCADE,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
+    duration INT NOT NULL,  -- Duration in minutes
+    cost DECIMAL(10, 2) NOT NULL,
+    called_number VARCHAR(20) NOT NULL,  -- Phone number called
+    out_of_country BOOLEAN DEFAULT FALSE,
+    UNIQUE (call_id, subscription_id)
+);
+
+-- Data Session Table
+CREATE TABLE data_session (
+    session_id SERIAL PRIMARY KEY,
+    subscription_id INT REFERENCES subscription(subscription_id) ON DELETE CASCADE,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
+    data_used_mb DECIMAL(10, 2) NOT NULL,
+    cost DECIMAL(10, 2) NOT NULL,
+    UNIQUE (session_id, subscription_id)
+);
+
+-- Billing Table
+CREATE TABLE billing (
+    billing_id SERIAL PRIMARY KEY,
+    customer_id INT REFERENCES Customer(customer_id) ON DELETE CASCADE,
+    month DATE NOT NULL,
+    due_date DATE NOT NULL, 
+    total_calls INT DEFAULT 0,
+    total_data DECIMAL(10, 2) DEFAULT 0,   -- Total data in MB
+    total_due DECIMAL(10, 2) DEFAULT 0,
+    is_paid BOOLEAN DEFAULT FALSE,         -- Payment status (FALSE if overdue)
+    UNIQUE (customer_id, month)
+);
+
+-- Bank Account Table
+CREATE TABLE bank_account (
+    bank_account_id SERIAL PRIMARY KEY,
+    customer_id INT REFERENCES Customer(customer_id) ON DELETE CASCADE,
+    card_number VARCHAR(16) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    exp_date DATE NOT NULL,
+    cvv CHAR(3) NOT NULL,
+    balance DECIMAL(10, 2) DEFAULT 0,
+    UNIQUE (customer_id, card_number)
+);
+
+CREATE TABLE company_bank (
+    bank_account_id SERIAL PRIMARY KEY,
+    account_name VARCHAR(100) NOT NULL,
+    account_number VARCHAR(20) UNIQUE NOT NULL, -- Bank account number, must be unique
+    routing_number VARCHAR(20) NOT NULL,
+    balance DECIMAL(15, 2) DEFAULT 0
+);
+
+-- Transaction Table
+CREATE TABLE transaction (
+    transaction_id SERIAL PRIMARY KEY,
+    customer_id INT REFERENCES Customer(customer_id) ON DELETE CASCADE,
+    amount DECIMAL(10, 2) NOT NULL, 
+    transaction_date TIMESTAMP DEFAULT NOW(),
+    transaction_type VARCHAR(10) NOT NULL CHECK (transaction_type IN ('prepaid', 'postpaid')), -- Prepaid or Postpaid
+    payment_method VARCHAR(50),  -- Method of payment (e.g., 'credit card', 'debit card')
+    billing_id INT REFERENCES billing(billing_id) ON DELETE SET NULL, -- Links to postpaid billing (nullable for prepaid)
+);
