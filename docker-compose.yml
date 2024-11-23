@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        PORT: ${APP_PORT}
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=${APP_PORT}
+      - NODE_ENV=development
+    command: npm run dev
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    env_file:
+      - .env
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # - ./db-init:/docker-entrypoint-initdb.d
+
+volumes:
+  pgdata:
