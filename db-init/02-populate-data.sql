@@ -79,47 +79,59 @@ INSERT INTO subscription (subscription_id, customer_id, plan_id, start_date, end
 (12, 12, 5, CURRENT_DATE, NULL, TRUE, NULL, NULL);  -- EasyTravel;
 
 -- Insert data into billing_cycle
-INSERT INTO billing_cycle (subscription_id, start_date, billing_date, end_date, call_charge, sms_charge, unlimited_data_charge, total_charge) VALUES
-(1, '2024-11-01', '2024-11-15', '2024-11-30', 1.50, 1.60, NULL, 3.10), -- Prepaid
-(2, '2024-11-01', '2024-11-15', '2024-11-30', NULL, NULL, 50.00, 50.00), -- Unlimited
-(3, '2024-11-01', '2024-11-15', '2024-11-30', 25.00, 10.00, NULL, 35.00), -- Postpaid
-(4, '2024-11-01', '2024-11-15', '2024-11-30', NULL, NULL, 80.00, 80.00), -- Unlimited Premium
-(5, '2024-11-01', '2024-11-15', '2024-11-30', 2.50, 1.80, NULL, 4.30), -- Prepaid
-(6, '2024-11-01', '2024-11-15', '2024-11-30', NULL, NULL, 90.00, 90.00), -- Unlimited Premium
-(7, '2024-11-01', '2024-11-15', '2024-11-30', 13.00, 2.75, NULL, 15.75), -- Travel
-(8, '2024-11-01', '2024-11-15', '2024-11-30', NULL, NULL, 75.00, 75.00), -- Unlimited Basic
-(9, '2024-11-01', '2024-11-15', '2024-11-30', 18.00, 6.00, NULL, 24.00), -- Postpaid
-(10, '2024-11-01', '2024-11-15', '2024-11-30', NULL, NULL, 100.00, 100.00), -- Unlimited Premium
-(11, '2024-11-01', '2024-11-15', '2024-11-30', 12.00, 5.00, NULL, 17.00), -- Prepaid
-(12, '2024-11-01', '2024-11-15', '2024-11-30', 30.00, 12.00, NULL, 42.00); -- Travel
+INSERT INTO billing_cycle (subscription_id, start_date, billing_date, end_date, subscription_charge, call_charge, sms_charge, data_charge, tax, total_charge, status) VALUES
+(1, '2024-11-15', '2024-12-16', '2024-12-15', 10.00, 1.50, 1.60, 0.00, 1.31, 14.41, 'paid'), -- Prepaid
+(2, '2024-11-15', '2024-12-16', '2024-12-15', 50.00, 0.00, 0.00, 50.00, 10.00, 110.00, 'paid'), -- Unlimited
+(3, '2024-11-15', '2024-12-16', '2024-12-15', 20.00, 25.00, 10.00, 0.00, 5.50, 60.50, 'unpaid'), -- Postpaid
+(4, '2024-11-15', '2024-12-16', '2024-12-15', 80.00, 0.00, 0.00, 80.00, 16.00, 176.00, 'paid'), -- Unlimited Premium
+(5, '2024-11-15', '2024-12-16', '2024-12-15', 10.00, 2.50, 1.80, 0.00, 1.43, 15.73, 'unpaid'), -- Prepaid
+(6, '2024-10-01', '2024-11-02', '2024-11-01', 90.00, 0.00, 0.00, 90.00, 18.00, 198.00, 'overdue'), -- Unlimited Premium
+(7, '2024-11-15', '2024-12-16', '2024-12-15', 50.00, 13.00, 2.75, 0.00, 6.58, 72.33, 'paid'), -- Travel
+(8, '2024-11-15', '2024-12-16', '2024-12-15', 75.00, 0.00, 0.00, 75.00, 15.00, 165.00, 'paid'), -- Unlimited Basic
+(9, '2024-11-15', '2024-12-16', '2024-12-15', 20.00, 18.00, 6.00, 0.00, 4.40, 48.40, 'unpaid'), -- Postpaid
+(10, '2024-11-15', '2024-12-16', '2024-12-15', 100.00, 0.00, 0.00, 100.00, 20.00, 220.00, 'paid'), -- Unlimited Premium
+(11, '2024-11-15', '2024-12-16', '2024-12-15', 10.00, 12.00, 5.00, 0.00, 2.70, 29.70, 'paid'), -- Prepaid
+(12, '2024-10-01', '2024-11-02', '2024-11-01', 50.00, 30.00, 12.00, 0.00, 9.20, 101.20, 'overdue'); -- Travel
 
 -- Insert data into data_usage
-INSERT INTO data_usage (phone_number, date, data_used, cost) VALUES
-('15551234567', CURRENT_DATE, 500.00, 25.00),
-('15557654321', CURRENT_DATE, 2000.00, 0.00),
-('15551234001', CURRENT_DATE, 1500.00, 60.00),
-('15551234002', CURRENT_DATE, 2000.00, 0.00),
-('15551234003', CURRENT_DATE, 500.00, 25.00),
-('15551234004', CURRENT_DATE, 3000.00, 0.00),
-('15551234005', CURRENT_DATE, 1000.00, 50.00),
-('15551234006', CURRENT_DATE, 2500.00, 0.00),
-('15551234007', CURRENT_DATE, 1200.00, 48.00),
-('15551234008', CURRENT_DATE, 3500.00, 0.00),
-('15551234009', CURRENT_DATE, 600.00, 24.00),
-('15551234010', CURRENT_DATE, 2000.00, 100.00);
+INSERT INTO data_usage (phone_number, data_used, cost) VALUES
+('15551234567', 500.00, 25.00),
+('15557654321', 2000.00, 100.00),
+('15551234001', 1500.00, 75.00),
+('15551234002', 2000.00, 100.00),
+('15551234003', 500.00, 25.00),
+('15551234004', 3000.00, 150.00),
+('15551234005', 1000.00, 50.00),
+('15551234006', 2500.00, 125.00),
+('15551234007', 1200.00, 60.00),
+('15551234008', 3500.00, 175.00),
+('15551234009', 600.00, 30.00),
+('15551234010', 2000.00, 100.00);
+
+INSERT INTO international_data_usage (phone_number, data_used, flat_rate, cost) VALUES
+('15551234567', 50.00, 1.00, 50.00),
+('15557654321', 30.00, 0.00, 0.00), -- travel plan
+('15551234001', 100.00, 1.00, 100.00),
+('15551234002', 75.00, 1.00, 75.00),
+('15551234003', 60.00, 1.00, 60.00),
+('15551234004', 120.00, 1.00, 120.00),
+('15551234005', 40.00, 0.00, 0.00), --travel plan
+('15551234006', 90.00, 1.00, 90.00),
+('15551234007', 80.00, 1.00, 80.00),
+('15551234008', 150.00, 1.00, 150.00);
 
 -- Insert data into international_code
-INSERT INTO international_code (country_code, country_name, rate_per_min, sms_rate, rate_per_MBs) VALUES
-(1, 'Canada', 0.10, 0.05, 0.10),
-(52, 'Mexico', 0.15, 0.08, 0.12),
-(44, 'United Kingdom', 0.12, 0.06, 0.11),
-(91, 'India', 0.07, 0.03, 0.08),
-(81, 'Japan', 0.20, 0.10, 0.15),
-(49, 'Germany', 0.13, 0.07, 0.10),
-(33, 'France', 0.14, 0.06, 0.12),
-(61, 'Australia', 0.11, 0.05, 0.10),
-(86, 'China', 0.09, 0.04, 0.09),
-(7, 'Russia', 0.18, 0.09, 0.14);
+INSERT INTO international_code (country_code, country_name, rate_per_min, sms_rate) VALUES
+(1, 'Canada', 0.10, 0.05),
+(52, 'Mexico', 0.15, 0.08),
+(44, 'United Kingdom', 0.12, 0.06),
+(91, 'India', 0.07, 0.03),
+(81, 'Japan', 0.20, 0.10),
+(49, 'Germany', 0.13, 0.07),
+(33, 'France', 0.14, 0.06),
+(61, 'Australia', 0.11, 0.05),
+(86, 'China', 0.09, 0.04),
+(7, 'Russia', 0.18, 0.09);
 
 -- Insert data into partner_provider
 INSERT INTO partner_provider (provider_id, provider_name, country_code) VALUES
@@ -134,19 +146,6 @@ INSERT INTO partner_provider (provider_id, provider_name, country_code) VALUES
 (9, 'Optus', 61),           -- Australia
 (10, 'China Mobile', 86),   -- China
 (11, 'Beeline', 7);         -- Russia
-
--- Insert data into international_data_usage
-INSERT INTO international_data_usage (phone_number, start_time, country_code, provider_id, end_time, data_used, cost) VALUES
-('15551234567', '2024-11-01 08:00:00', 52, 1, '2024-11-01 10:00:00', 50.00, 5.00), -- Usage in Mexico
-('15557654321', '2024-11-02 09:00:00', 91, 5, '2024-11-02 09:30:00', 30.00, 3.00), -- Usage in India
-('15551234001', '2024-11-03 12:00:00', 44, 4, '2024-11-03 13:00:00', 100.00, 10.00), -- Usage in United Kingdom
-('15551234002', '2024-11-03 15:00:00', 81, 6, '2024-11-03 15:45:00', 75.00, 7.50), -- Usage in Japan
-('15551234003', '2024-11-04 10:00:00', 49, 7, '2024-11-04 10:30:00', 60.00, 6.00), -- Usage in Germany
-('15551234004', '2024-11-04 14:00:00', 33, 8, '2024-11-04 15:00:00', 120.00, 12.00), -- Usage in France
-('15551234005', '2024-11-05 09:00:00', 61, 9, '2024-11-05 09:20:00', 40.00, 4.00), -- Usage in Australia
-('15551234006', '2024-11-05 18:00:00', 86, 10, '2024-11-05 19:00:00', 90.00, 9.00), -- Usage in China
-('15551234007', '2024-11-06 08:00:00', 7, 11, '2024-11-06 08:45:00', 80.00, 8.00), -- Usage in Russia
-('15551234008', '2024-11-06 20:00:00', 1, 2, '2024-11-06 21:00:00', 150.00, 15.00); -- Usage in United States;
 
 -- Insert data into home_area
 INSERT INTO home_area (area_id, zipcode, city, state, active) VALUES
