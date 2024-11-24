@@ -29,7 +29,7 @@ services:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
     volumes:
       - pgdata:/var/lib/postgresql/data
-      # - ./db-init:/docker-entrypoint-initdb.d
+      - ./db-init:/docker-entrypoint-initdb.d
 
 volumes:
   pgdata:

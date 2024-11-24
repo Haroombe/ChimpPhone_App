@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS international_code (
     country_code INT PRIMARY KEY,
     country_name VARCHAR(255),
     rate_per_min DECIMAL(10, 2),
-    sms_rate DECIMAL(10, 2),
+    sms_rate DECIMAL(10, 2)
 );
 
 -- Table: partner_provider
