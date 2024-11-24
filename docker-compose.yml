@@ -7,7 +7,7 @@ services:
       args:
         PORT: ${APP_PORT}
     volumes:
-      - ./app:/app
+      - .:/app
       - /app/node_modules
     ports:
       - '${APP_PORT}:${APP_PORT}'
@@ -20,7 +20,6 @@ services:
     command: npm run dev
     depends_on:
       - db
-
   db:
     image: postgres:13
     env_file:
@@ -30,6 +29,5 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./db-init:/docker-entrypoint-initdb.d
-
 volumes:
   pgdata:

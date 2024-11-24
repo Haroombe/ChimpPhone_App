@@ -1,87 +1,36 @@
-# Chimpphone Backend
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Built with Next.js, PostgreSQL, and docker.
+## Getting Started
 
-# Getting Started
+First, run the development server:
 
-Follow these steps to set up and run the application and database.
-
-## 1. Setup Docker on Your Machine
-
-Ensure that you have Docker and Docker Compose installed. Refer to `./docker-setup.md` for more details.
-
-## 2. Set Environment Variables
-
-Before running the application, you need to set up environment variables. These are defined in the `.env` file located in the root of your repository. Below is a summary of the variables you need to configure:
-
-| Variable          | Description                        | Default Value |
-|-------------------|------------------------------------|---------------|
-| POSTGRES_USER     | PostgreSQL database username       | dbs-15        |
-| POSTGRES_PASSWORD | PostgreSQL database password       | abc           |
-| POSTGRES_DB       | Name of the PostgreSQL database    | chimpphone    |
-| POSTGRES_PORT     | Port for PostgreSQL database       | 5432          |
-| APP_PORT          | Port for the application           | 3000          |
-| DATABASE_URL      | Connection string for PostgreSQL   | `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}` |
-
-**NOTE:Postgres User and Database will be created based on the variables set, no prior setup is needed**
-Ensure that these variables are correctly set in your `.env` file.
-
-## 3. Start Up the App and Database
-
-To start the app and database containers run:
-
-```
-docker-compose up
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-If you change dependencies in `package.json` or `package-lock.json` during development, you'll need to rebuild the Docker image to install the new dependencies inside the container:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```
-docker-compose up --build
-```
+You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-### Access the Application
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-#### **To access webpage:**
-Open your browser and navigate to `http://localhost:{APP_PORT}` to access the application.
+## Learn More
 
-#### **To access the postgres db terminal:**
+To learn more about Next.js, take a look at the following resources:
 
-find the name of the container running the **database**:
-```
-docker ps -a
-```
-~copy the name of the image running `postgres:13` 
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-```
-docker exec -it {db-container-name} psql -U {POSTGRES_USER} -d {POSTGRES_DB}
-```
+## Deploy on Vercel
 
-#### **To access the application terminal:**
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-~find the name of the container running the **application**:
-```
-docker ps -a
-```
-~copy the name of the image running the **app** 
-
-
-```
-docker exec -it {app-container-name} sh
-```
-
-### Stopping and Removing Containers and Volumes
-
-To stop the containers and remove the associated volumes (this will delete the database data), run:
-```
-docker-compose down --volumes
-```
-
-This command stops the containers and removes the volumes, effectively deleting the database data.
-
-If you just want to stop the containers but keep the data in them, run:
-
-```
-docker-compose down
-```
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

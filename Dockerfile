@@ -8,14 +8,14 @@ WORKDIR /app
 ARG PORT
 ENV PORT=${PORT}
 
-# Copy package.json and package-lock.json from app directory
-COPY app/package*.json ./
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# Install dependencies, including dev dependencies
+# Install dependencies
 RUN npm install
 
-# Copy the rest of your application code from app directory
-COPY app/ .
+# Copy the rest of your application code
+COPY . .
 
 # Expose the port specified in .env
 EXPOSE ${PORT}
