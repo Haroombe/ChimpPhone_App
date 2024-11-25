@@ -1,6 +1,6 @@
 -- Table: company_bank
 CREATE TABLE IF NOT EXISTS company_bank (
-    bank_account_id INT PRIMARY KEY,
+    bank_account_id SERIAL PRIMARY KEY,
     account_name VARCHAR(255),
     account_number VARCHAR(20),
     routing_number VARCHAR(20),
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS company_bank (
 
 -- Table: customer
 CREATE TABLE IF NOT EXISTS customer (
-    customer_id INT PRIMARY KEY,
+    customer_id SERIAL PRIMARY KEY,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
     email VARCHAR(255),
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS customer (
 
 -- Table: phone_plan (prepaid, postpaid, unlimited, travel)
 CREATE TABLE IF NOT EXISTS phone_plan (
-    plan_id INT PRIMARY KEY,
+    plan_id SERIAL PRIMARY KEY,
     plan_name VARCHAR(255),
     rate_per_minute DECIMAL(10, 2),
     rate_per_MB DECIMAL(10, 2),
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS phone_plan (
 
 -- Table: promotion
 CREATE TABLE IF NOT EXISTS promotion (
-    promotion_id INT PRIMARY KEY,
+    promotion_id SERIAL PRIMARY KEY,
     promotion_name VARCHAR(255) NOT NULL,
     discount_code VARCHAR(50) UNIQUE,
     discount_type VARCHAR(20) NOT NULL CHECK (discount_type IN ('percentage', 'fixed')),
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS promotion (
 
 -- Table: bank_account
 CREATE TABLE IF NOT EXISTS bank_account (
-    bank_account_id INT PRIMARY KEY,
+    bank_account_id SERIAL PRIMARY KEY,
     customer_id INT,
     card_number VARCHAR(16),
     name VARCHAR(255),
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS phone_number_list (
 
 -- Table: subscription
 CREATE TABLE IF NOT EXISTS subscription (
-    subscription_id INT PRIMARY KEY,
+    subscription_id SERIAL PRIMARY KEY,
     customer_id INT NOT NULL,
     plan_id INT NOT NULL,
     start_date DATE NOT NULL,
@@ -107,16 +107,16 @@ CREATE TABLE IF NOT EXISTS billing_cycle (
 
 -- Table: home_area
 CREATE TABLE IF NOT EXISTS home_area (
-    area_id INT PRIMARY KEY,
+    area_id SERIAL PRIMARY KEY,
     zipcode VARCHAR(10),
     city VARCHAR(255),
     state VARCHAR(50),
     active BOOLEAN
-);
+); 
 
 -- Table: international_code
 CREATE TABLE IF NOT EXISTS international_code (
-    country_code INT PRIMARY KEY,
+    country_code SERIAL PRIMARY KEY,
     country_name VARCHAR(255),
     rate_per_min DECIMAL(10, 2),
     sms_rate DECIMAL(10, 2)
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS international_code (
 
 -- Table: partner_provider
 CREATE TABLE IF NOT EXISTS partner_provider (
-    provider_id INT PRIMARY KEY,
+    provider_id SERIAL PRIMARY KEY,
     provider_name VARCHAR(255) NOT NULL,
     country_code INT NOT NULL,
     FOREIGN KEY (country_code) REFERENCES international_code(country_code)
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS international_data_usage (
 
 -- Table: call_log
 CREATE TABLE IF NOT EXISTS call_log (
-    call_id INT PRIMARY KEY,
+    call_id SERIAL PRIMARY KEY,
     from_phone_number VARCHAR(20) NOT NULL,
     area_id INT,
     country_code INT,
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS sms_log (
 
 -- Table: call_transit (for call while moving between 2 area)
 CREATE TABLE IF NOT EXISTS call_transit (
-    transit_id INT PRIMARY KEY,
+    transit_id SERIAL PRIMARY KEY,
     call_id INT,
     from_area INT,
     to_area INT,
