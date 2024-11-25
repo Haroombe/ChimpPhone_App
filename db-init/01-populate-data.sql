@@ -48,12 +48,12 @@ INSERT INTO phone_number_list (phone_number, customer_id, is_primary, added_date
 ('15551234010', 12, TRUE, CURRENT_DATE);
 
 -- Insert data into phone_plan
-INSERT INTO phone_plan ( plan_name, rate_per_minute, rate_per_MB, rate_per_char, MBs_soft_cap, MBs_hard_cap, plan_type, monthly_charge) VALUES
-('Prepaid', 0.10, 0.05, 0.01, 20000.00, 8000.00, 'prepaid', NULL),
-( 'Postpaid', 0.08, 0.04, 0.01, 20000.00, 8000.00, 'postpaid', NULL),
-( 'Unlimited Basic', NULL, NULL, NULL, 25000.00, 10000.00, 'unlimited', 50.00),
-( 'Unlimited Premium', NULL, NULL, NULL, 35000.00, 12000.00, 'unlimited', 80.00),
-( 'EasyTravel', 0.20, NULL, NULL, 20000.00, 30000.00, 'travel', 50.00);
+INSERT INTO phone_plan ( plan_name, rate_per_minute, rate_per_MB, rate_per_char, MBs_soft_cap, MBs_hard_cap, plan_type, monthly_charge, international_rate) VALUES
+('Prepaid', 0.10, 0.05, 0.01, 20000.00, 8000.00, 'prepaid', NULL, 1.0),
+( 'Postpaid', 0.08, 0.04, 0.01, 20000.00, 8000.00, 'postpaid', NULL, 1.0),
+( 'Unlimited Basic', NULL, NULL, NULL, 25000.00, 10000.00, 'unlimited', 50.00, 1.0),
+( 'Unlimited Premium', NULL, NULL, NULL, 35000.00, 12000.00, 'unlimited', 80.00, 1.0),
+( 'EasyTravel', 0.20, NULL, NULL, 20000.00, 30000.00, 'travel', 50.00, 0);
 
 -- Insert data into promotion
 INSERT INTO promotion ( promotion_name, discount_code, discount_type, discount_value, start_date, end_date, min_subscription_duration, min_spending, applicable_plan_id, previous_provider_require) VALUES
@@ -108,17 +108,17 @@ INSERT INTO data_usage (phone_number, data_used, cost) VALUES
 ('15551234009', 600.00, 30.00),
 ('15551234010', 2000.00, 100.00);
 
-INSERT INTO international_data_usage (phone_number, data_used, flat_rate, cost) VALUES
-('15551234567', 50.00, 1.00, 50.00),
-('15557654321', 30.00, 0.00, 0.00), -- travel plan
-('15551234001', 100.00, 1.00, 100.00),
-('15551234002', 75.00, 1.00, 75.00),
-('15551234003', 60.00, 1.00, 60.00),
-('15551234004', 120.00, 1.00, 120.00),
-('15551234005', 40.00, 0.00, 0.00), --travel plan
-('15551234006', 90.00, 1.00, 90.00),
-('15551234007', 80.00, 1.00, 80.00),
-('15551234008', 150.00, 1.00, 150.00);
+INSERT INTO international_data_usage (phone_number, data_used, cost) VALUES
+('15551234567', 50.00, 50.00),
+('15557654321', 30.00, 0.00), -- travel plan
+('15551234001', 100.00, 100.00),
+('15551234002', 75.00, 75.00),
+('15551234003', 60.00, 60.00),
+('15551234004', 120.00, 120.00),
+('15551234005', 40.00, 0.00), --travel plan
+('15551234006', 90.00, 90.00),
+('15551234007', 80.00, 80.00),
+('15551234008', 150.00, 150.00);
 
 -- Insert data into international_code
 INSERT INTO international_code (country_code, country_name, rate_per_min, sms_rate) VALUES

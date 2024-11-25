@@ -142,7 +142,6 @@ CREATE TABLE IF NOT EXISTS data_usage (
 CREATE TABLE IF NOT EXISTS international_data_usage (
     phone_number VARCHAR(20) PRIMARY KEY, -- One row per phone number
     data_used DECIMAL(15, 2) CHECK (data_used >= 0), -- International data usage
-    flat_rate DECIMAL(15, 2) CHECK (flat_rate >= 0), -- Flat rate for international usage
     cost DECIMAL(15, 2) CHECK (cost >= 0), -- Total cost for international usage
     FOREIGN KEY (phone_number) REFERENCES phone_number_list(phone_number)
 );
