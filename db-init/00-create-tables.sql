@@ -132,17 +132,21 @@ CREATE TABLE IF NOT EXISTS partner_provider (
 
 -- Table: data_usage
 CREATE TABLE IF NOT EXISTS data_usage (
-    phone_number VARCHAR(20) PRIMARY KEY, -- One row per phone number
+    phone_number VARCHAR(20), 
+    month DATE, -- new row add each mont
     data_used DECIMAL(15, 2) CHECK (data_used >= 0), -- Domestic data usage
     cost DECIMAL(15, 2) CHECK (cost >= 0), -- Cost for domestic usage
+    PRIMARY KEY(phone_number, month),
     FOREIGN KEY (phone_number) REFERENCES phone_number_list(phone_number)
 );
 
 -- Table: international_data_usage
 CREATE TABLE IF NOT EXISTS international_data_usage (
-    phone_number VARCHAR(20) PRIMARY KEY, -- One row per phone number
+    phone_number VARCHAR(20),
+    month DATE, -- new row add each month
     data_used DECIMAL(15, 2) CHECK (data_used >= 0), -- International data usage
     cost DECIMAL(15, 2) CHECK (cost >= 0), -- Total cost for international usage
+    PRIMARY KEY(phone_number, month),
     FOREIGN KEY (phone_number) REFERENCES phone_number_list(phone_number)
 );
 
