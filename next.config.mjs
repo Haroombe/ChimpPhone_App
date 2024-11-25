@@ -21,6 +21,9 @@ const nextConfig = {
     }
     return config;
   },
+  images: {
+    domains: ['img.daisyui.com', 'themoviedb.org'],
+  },
 };
 
 export default nextConfig;
