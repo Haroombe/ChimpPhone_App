@@ -1,3 +1,4 @@
+    // get current cycle bill
 import { NextResponse } from 'next/server';
 import { pool } from '@/utils/db';
 
@@ -31,13 +32,15 @@ export async function GET(req) {
                 p.rate_per_minute,
                 p.rate_per_MB,
                 p.rate_per_char,
-                p.monthly_charge
+                p.monthly_charge,
+                s.prepaid_balance
             FROM customer c
             JOIN subscription s ON c.customer_id = s.customer_id
             JOIN billing_cycle b ON s.subscription_id = b.subscription_id
             JOIN phone_plan p ON s.plan_id = p.plan_id
             WHERE c.customer_id = $1
-            AND s.active = TRUE;`,
+            AND s.active = TRUE
+            AND CURRENT_DATE BETWEEN b.start_date AND b.end_date;`,
             [customerid]
         );
 
@@ -47,7 +50,7 @@ export async function GET(req) {
                 { status: 404 }
             );
         }
-
+        //console.log(result.rows);
         return NextResponse.json({ success: true, data: result.rows });
     } catch (error) {
         console.error('Error fetching billing info:', error.message);

@@ -6,6 +6,7 @@ export default function BillingPage({ params }) {
     const unwrappedParams = use(params); 
     const { customerid } = unwrappedParams; // Get the customer ID from dynamic routing
     const [billingData, setBillingData] = useState(null);
+    const [unpaidBills, setUnpaidBills] = useState([]); // Past unpaid bills
     const [customerName, setCustomerName] = useState(""); // State to store customer name
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -29,6 +30,14 @@ export default function BillingPage({ params }) {
                 }
                 const billingResult = await billingResponse.json();
                 setBillingData(billingResult.data);
+
+                // Fetch unpaid bills
+                const unpaidResponse = await fetch(`/api/fetchUnpaidBill?customerid=${customerid}`);
+                if (!unpaidResponse.ok) {
+                    throw new Error("Failed to fetch unpaid bills");
+                }
+                const unpaidResult = await unpaidResponse.json();
+                setUnpaidBills(unpaidResult.data.unpaid_bills || []);
 
                 // Fetch customer name
                 const profileResponse = await fetch(`/api/fetchProfile?customerid=${customerid}`);
@@ -74,9 +83,7 @@ export default function BillingPage({ params }) {
             setPaymentMessage(`Payment of $${total_charge} was successful!`);
             alert(`Payment of $${total_charge} was successful!`);
             // Refresh billing data to reflect changes
-            const updatedBillingResponse = await fetch(`/api/fetchBilling?customerid=${customerid}`);
-            const updatedBillingResult = await updatedBillingResponse.json();
-            setBillingData(updatedBillingResult.data);
+            window.location.reload();
         } catch (error) {
             console.error("Error making payment:", error.message);
             setPaymentMessage(`Payment failed: ${error.message}`);
@@ -97,6 +104,9 @@ export default function BillingPage({ params }) {
     if (!billingData || billingData.length === 0) {
         return <div className="text-center text-gray-600 mt-4">No billing data found.</div>;
     }
+
+    // Calculate total unpaid amount
+    const totalUnpaid = unpaidBills.reduce((sum, bill) => sum + parseFloat(bill.total_charge), 0);
 
     return (
         <div className="bg-gray-100 min-h-screen">
@@ -227,54 +237,79 @@ export default function BillingPage({ params }) {
                                         </tbody>
                                     </table>
                                 </div>
+                            {/* Unpaid Past Bills */}
+                            <div className="py-6 lg:col-span-8">
+                                <div className="bg-white rounded-lg shadow-md p-6">
+                                    <h2 className="text-lg font-semibold text-sky-700">Past Unpaid Bills</h2>
+                                    {unpaidBills.length > 0 ? (
+                                        <table className="w-full mt-4">
+                                            <thead>
+                                                <tr>
+                                                    <th className="text-left font-semibold text-gray-800">Period</th>
+                                                    <th className="text-left font-semibold text-gray-800">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {unpaidBills.map((bill, index) => (
+                                                    <tr key={index} className="border-t border-gray-200">
+                                                        <td className="py-4 text-gray-800">
+                                                            {formatDate(bill.start_date)} to {formatDate(bill.end_date)}
+                                                        </td>
+                                                        <td className="py-4 text-gray-800">${bill.total_charge}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <p className="text-center text-gray-600">No unpaid bills.</p>
+                                    )}
+                                </div>
                             </div>
-
+                            </div>
+                            
                             {/* Summary Section */}
-                            <div className="py-6 lg:col-span-4">
+                            <div className="py-6 lg:col-span-4 lg:row-span-1">
                                 <div className="bg-white rounded-lg shadow-md p-6">
                                     <h2 className="text-lg font-semibold text-sky-700">Summary</h2>
-
-                                    {/* Subtotal */}
-                                    <div className="flex justify-between mb-2 text-gray-900 mt-4">
-                                        <span>Subtotal</span>
+                                    <div className="flex justify-between text-gray-900 mt-4">
+                                        <span>Total Unpaid</span>
                                         <span>
-                                            $
-                                            {billingData
-                                                .reduce(
-                                                    (sum, bill) => sum + parseFloat(bill.total_charge - bill.tax),
-                                                    0
-                                                )
-                                                .toFixed(2)}
+                                        ${totalUnpaid.toFixed(2)}
                                         </span>
                                     </div>
-
-                                    {/* Taxes */}
-                                    <div className="flex justify-between mb-2 text-gray-900">
-                                        <span>Taxes</span>
+                                    <div className="flex justify-between text-gray-900">
+                                        <span>Total Current Cycle</span>
                                         <span>
-                                            $
-                                            {billingData
-                                                .reduce((sum, bill) => sum + parseFloat(bill.tax), 0)
-                                                .toFixed(2)}
+                                        $
+                                        {billingData
+                                            .reduce((sum, bill) => {
+                                                return bill.status === "unpaid"
+                                                    ? sum + parseFloat(bill.total_charge)
+                                                    : sum;
+                                            }, 0)
+                                            .toFixed(2)}
                                         </span>
                                     </div>
-
                                     <hr className="my-2" />
-
-                                    {/* Total */}
-                                    <div className="flex justify-between mb-2 text-gray-900">
-                                        <span className="font-semibold">Total</span>
-                                        <span className="font-semibold">
-                                            $
-                                            {billingData.reduce(
-                                                (sum, bill) => sum + parseFloat(bill.total_charge),
-                                                0
-                                            ).toFixed(2)}
-                                        </span>
+                                    <div className="flex justify-between font-semibold text-gray-900">
+                                        <span>Grand Total</span>
+                                        <span>
+                                        $
+                                        {(
+                                            totalUnpaid +
+                                            billingData.reduce((sum, bill) => {
+                                                return bill.status === "unpaid"
+                                                    ? sum + parseFloat(bill.total_charge)
+                                                    : sum;
+                                            }, 0)
+                                        ).toFixed(2)}
+                                            </span>
                                     </div>
+
 
                                     {/* Buttons for Each Billing Cycle */}
                                     <div className="mt-4">
+                                        <h3 className="text-lg font-semibold text-gray-800">Pay Current Bill</h3>
                                         {billingData.map((bill, index) => (
                                             <div key={index} className="mb-4">
                                                 {bill.status === "paid" ? (
@@ -302,8 +337,55 @@ export default function BillingPage({ params }) {
                                             </div>
                                         ))}
                                     </div>
+
+                                    <div>
+                                    {/* Buttons for Past Unpaid Bills */}
+                                    {unpaidBills.length > 0 && (
+                                        <div className="mt-6">
+                                            <h3 className="text-lg font-semibold text-gray-800">Pay Past Bill</h3>
+                                            {unpaidBills.map((bill, index) => (
+                                                <div key={index} className="mb-4">
+                                                    <button
+                                                        className="bg-sky-700 text-white py-2 px-4 rounded-lg w-full"
+                                                        onClick={() =>
+                                                            handlePayment(
+                                                                bill.subscription_id,
+                                                                bill.start_date,
+                                                                bill.total_charge
+                                                            )
+                                                        }
+                                                        disabled={isPaying}
+                                                    >
+                                                        {isPaying ? "Processing..." : `Pay Now`}
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Prepaid Balance Card */}
+                                <div className="py-6 lg:col-span-4">
+                                    <div className="bg-white rounded-lg shadow-md p-6">
+                                        <h2 className="text-lg font-semibold text-sky-700">Prepaid Balance</h2>
+                                        <div className="flex justify-between mb-2 text-gray-900 mt-4">
+                                            <span>Prepaid Balance</span>
+                                            <span>
+                                            $
+                                            {billingData
+                                                .reduce(
+                                                    (sum, bill) => sum + (parseFloat(bill.prepaid_balance) || 0), // Parse string to number
+                                                    0 // Initial value for reduce
+                                                )
+                                                .toFixed(2)} {/* Ensure 2 decimal places */}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
+                        
+
 
                         </div>
                     </div>
