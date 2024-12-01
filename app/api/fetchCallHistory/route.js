@@ -15,42 +15,33 @@ export async function GET(req) {
     try {
         const result = await pool.query(
             `SELECT 
-                b.subscription_id,
-                b.billing_date, 
-                b.start_date, 
-                b.end_date, 
-                b.subscription_charge, 
-                b.call_charge, 
-                b.data_charge, 
-                b.sms_charge, 
-                b.tax, 
-                b.total_charge, 
-                b.status,
-                p.plan_name,
-                p.plan_type,
-                p.rate_per_minute,
-                p.rate_per_MB,
-                p.rate_per_char,
-                p.monthly_charge
+                DATE(l.start_time) AS call_date, -- Group by the date of the call
+                JSON_AGG(
+                    JSON_BUILD_OBJECT(
+                        'from_phone_number', l.from_phone_number,
+                        'to_number', l.to_number,
+                        'call_type', l.call_type,
+                        'start_time', l.start_time,
+                        'end_time', l.end_time,
+                        'duration', l.duration,
+                        'total_cost', l.total_cost
+                    )
+                ) AS calls
             FROM customer c
+            JOIN phone_number_list n ON c.customer_id = n.customer_id
+            JOIN call_log l ON n.phone_number = l.from_phone_number
             JOIN subscription s ON c.customer_id = s.customer_id
             JOIN billing_cycle b ON s.subscription_id = b.subscription_id
-            JOIN phone_plan p ON s.plan_id = p.plan_id
             WHERE c.customer_id = $1
-            AND s.active = TRUE;`,
+            GROUP BY call_date
+            ORDER BY call_date DESC
+            LIMIT 25;`, // Group by and sort by call_date
             [customerid]
         );
 
-        if (result.rows.length === 0) {
-            return NextResponse.json(
-                { success: false, error: 'No billing data found.' },
-                { status: 404 }
-            );
-        }
-
         return NextResponse.json({ success: true, data: result.rows });
     } catch (error) {
-        console.error('Error fetching billing info:', error.message);
+        console.error('Error call history info:', error.message);
         return NextResponse.json(
             { success: false, error: 'Internal Server Error' },
             { status: 500 }
