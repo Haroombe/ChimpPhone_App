@@ -20,6 +20,16 @@ CREATE TABLE IF NOT EXISTS customer (
     created_time TIMESTAMP
 );
 
+-- Table: transaction
+CREATE TABLE IF NOT EXISTS transaction (
+    transaction_id SERIAL PRIMARY KEY,
+    customer_id INT NOT NULL,
+    amount DECIMAL(15, 2) NOT NULL,
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    transaction_type VARCHAR(50) NOT NULL, -- charge/payment/auto
+    CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE
+);
+
 -- Table: phone_plan (prepaid, postpaid, unlimited, travel)
 CREATE TABLE IF NOT EXISTS phone_plan (
     plan_id SERIAL PRIMARY KEY,
@@ -178,6 +188,7 @@ CREATE TABLE IF NOT EXISTS sms_log (
     phone_number VARCHAR(20) NOT NULL,
     time TIMESTAMP NOT NULL,
     area_id INT,
+    country_code INT,
     char_count INT CHECK (char_count > 0),
     to_number VARCHAR(20) NOT NULL,
     roaming_cost DECIMAL(15, 2) CHECK (roaming_cost >= 0),
@@ -185,7 +196,8 @@ CREATE TABLE IF NOT EXISTS sms_log (
     total_cost DECIMAL(15, 2) CHECK (total_cost >= 0),
     PRIMARY KEY (phone_number, time),
     FOREIGN KEY (phone_number) REFERENCES phone_number_list(phone_number),
-    FOREIGN KEY (area_id) REFERENCES home_area(area_id)
+    FOREIGN KEY (area_id) REFERENCES home_area(area_id),
+    FOREIGN KEY (country_code) REFERENCES international_code(country_code)
 );
 
 -- Table: call_transit (for call while moving between 2 area)
