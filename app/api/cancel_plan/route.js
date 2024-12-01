@@ -72,6 +72,7 @@ export async function POST(req) {
 
             // Commit transaction
             await client.query('COMMIT');
+            await client.query('END'); // End transaction
 
             return NextResponse.json(
                 {

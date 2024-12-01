@@ -92,6 +92,8 @@ export async function POST(request) {
 
             // Commit transaction
             await client.query('COMMIT');
+            // END
+            await client.query('END');
 
             return NextResponse.json(
                 { success: true, message: 'Subscription updated successfully.' },

@@ -49,6 +49,7 @@ export async function POST(req) {
             }
 
             await client.query('COMMIT'); // Commit transaction
+            await client.query('END'); // End transaction
 
             return NextResponse.json(
                 { success: true, message: 'Customer profile updated successfully.' },
