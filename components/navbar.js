@@ -28,26 +28,9 @@ export default async function Navbar({ userId }) {
                     Send Message
                 </Link>
                 {/* Plans Dropdown */}
-                <ul className="menu menu-horizontal">
-                        <li>
-                            <details>
-                                <summary className="hover:bg-gray-500 p-2 text-xl">Phone plans</summary>
-                                <ul className="bg-base-100 rounded-t-none">
-                                    {/* TODO: MODIFY AND ADD PLANS HERE */}
-
-                                    {plans.map((plan) => (
-                                        <li key={plan.plan_id}>
-                                            <Link href={`/plans/${plan.plan_id}`}>
-                                                {plan.plan_name}
-                                            </Link>
-                                        </li>
-                                    ))}
-
-
-                                </ul>
-                            </details>
-                        </li>
-                </ul>
+                <Link href={`/user/${userId}/change_plan_process`} className="btn btn-ghost text-xl">
+                   Phone Plans
+                </Link>
                 <Link href="/about" className="btn btn-ghost text-xl">
                 About
                 </Link>
@@ -74,7 +57,7 @@ export default async function Navbar({ userId }) {
                     >
                         {/* TODO: Add check to see if user logged in, if not display sign in button else display user profile link */}
                         <li>
-                            <Link href={`/user/${userId}`}>
+                            <Link href={`/user/${userId}/setting`}>
                                 Profile
                             </Link>
                         </li>
