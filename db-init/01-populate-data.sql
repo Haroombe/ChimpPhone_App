@@ -32,6 +32,20 @@ INSERT INTO bank_account ( customer_id, card_number, name, exp_date, cvv, balanc
 ( 11, '1111000022223333', 'Ivy Green', '2026-02-28', '777', 1800.00, TRUE),
 ( 12, '2222000033334444', 'Jack Reaper', '2027-01-31', '888', 950.00, TRUE);
 
+-- Insert data into transaction
+INSERT INTO transaction (customer_id, amount, transaction_type)
+VALUES
+    (1, 150.00, 'charge'), -- Transaction for customer 1
+    (1, 50.00, 'charge'),   -- Transaction for customer 1
+    (2, 200.00, 'auto'), -- Transaction for customer 2
+    (2, 100.00, 'auto'),  -- Transaction for customer 2
+    (3, 500.00, 'payment'), -- Transaction for customer 3
+    (3, 300.00, 'payment'),  -- Transaction for customer 3
+    (4, 50.00, 'auto'),  -- Transaction for customer 4
+    (4, 25.00, 'auto'),   -- Transaction for customer 4
+    (5, 100.00, 'charge'), -- Transaction for customer 5
+    (6, 60.00, 'auto');   -- Transaction for customer 5
+
 -- Insert data into phone_number_list
 INSERT INTO phone_number_list (phone_number, customer_id, is_primary, added_date) VALUES
 ('15551234567', 1, TRUE, CURRENT_DATE),
@@ -48,12 +62,12 @@ INSERT INTO phone_number_list (phone_number, customer_id, is_primary, added_date
 ('15551234010', 12, TRUE, CURRENT_DATE);
 
 -- Insert data into phone_plan
-INSERT INTO phone_plan ( plan_name, rate_per_minute, rate_per_MB, rate_per_char, MBs_soft_cap, MBs_hard_cap, plan_type, monthly_charge) VALUES
-('Prepaid', 0.10, 0.05, 0.01, 20000.00, 8000.00, 'prepaid', NULL),
-( 'Postpaid', 0.08, 0.04, 0.01, 20000.00, 8000.00, 'postpaid', NULL),
-( 'Unlimited Basic', NULL, NULL, NULL, 25000.00, 10000.00, 'unlimited', 50.00),
-( 'Unlimited Premium', NULL, NULL, NULL, 35000.00, 12000.00, 'unlimited', 80.00),
-( 'EasyTravel', 0.20, NULL, NULL, 20000.00, 30000.00, 'travel', 50.00);
+INSERT INTO phone_plan ( plan_name, rate_per_minute, rate_per_MB, rate_per_char, MBs_soft_cap, MBs_hard_cap, plan_type, monthly_charge, international_rate) VALUES
+('Prepaid', 0.10, 0.05, 0.01, 20000.00, 8000.00, 'prepaid', NULL, 1.0),
+( 'Postpaid', 0.08, 0.04, 0.01, 20000.00, 8000.00, 'postpaid', NULL, 1.0),
+( 'Unlimited Basic', NULL, NULL, NULL, 25000.00, 10000.00, 'unlimited', 50.00, 1.0),
+( 'Unlimited Premium', NULL, NULL, NULL, 35000.00, 12000.00, 'unlimited', 80.00, 1.0),
+( 'EasyTravel', 0.20, NULL, NULL, 20000.00, 30000.00, 'travel', 50.00, 0.00);
 
 -- Insert data into promotion
 INSERT INTO promotion ( promotion_name, discount_code, discount_type, discount_value, start_date, end_date, min_subscription_duration, min_spending, applicable_plan_id, previous_provider_require) VALUES
@@ -81,44 +95,48 @@ INSERT INTO subscription ( customer_id, plan_id, start_date, end_date, active, p
 -- Insert data into billing_cycle
 INSERT INTO billing_cycle (subscription_id, start_date, billing_date, end_date, subscription_charge, call_charge, sms_charge, data_charge, tax, total_charge, status) VALUES
 (1, '2024-11-15', '2024-12-16', '2024-12-15', 10.00, 1.50, 1.60, 0.00, 1.31, 14.41, 'paid'), -- Prepaid
-(2, '2024-11-15', '2024-12-16', '2024-12-15', 50.00, 0.00, 0.00, 50.00, 10.00, 110.00, 'paid'), -- Unlimited
+(2, '2024-11-15', '2024-12-16', '2024-12-15', 50.00, 0.00, 0.00, 50.00, 10.00, 110.00, 'unpaid'), -- Unlimited
+(3, '2024-10-15', '2024-11-16', '2024-11-15', 20.00, 25.00, 10.00, 0.00, 5.50, 60.50, 'paid'), -- Postpaid
 (3, '2024-11-15', '2024-12-16', '2024-12-15', 20.00, 25.00, 10.00, 0.00, 5.50, 60.50, 'unpaid'), -- Postpaid
 (4, '2024-11-15', '2024-12-16', '2024-12-15', 80.00, 0.00, 0.00, 80.00, 16.00, 176.00, 'paid'), -- Unlimited Premium
+(4, '2024-10-15', '2024-11-16', '2024-11-15', 80.00, 0.00, 0.00, 80.00, 16.00, 176.00, 'paid'), -- Unlimited Premium
 (5, '2024-11-15', '2024-12-16', '2024-12-15', 10.00, 2.50, 1.80, 0.00, 1.43, 15.73, 'unpaid'), -- Prepaid
 (6, '2024-10-01', '2024-11-02', '2024-11-01', 90.00, 0.00, 0.00, 90.00, 18.00, 198.00, 'overdue'), -- Unlimited Premium
 (7, '2024-11-15', '2024-12-16', '2024-12-15', 50.00, 13.00, 2.75, 0.00, 6.58, 72.33, 'paid'), -- Travel
 (8, '2024-11-15', '2024-12-16', '2024-12-15', 75.00, 0.00, 0.00, 75.00, 15.00, 165.00, 'paid'), -- Unlimited Basic
 (9, '2024-11-15', '2024-12-16', '2024-12-15', 20.00, 18.00, 6.00, 0.00, 4.40, 48.40, 'unpaid'), -- Postpaid
-(10, '2024-11-15', '2024-12-16', '2024-12-15', 100.00, 0.00, 0.00, 100.00, 20.00, 220.00, 'paid'), -- Unlimited Premium
-(11, '2024-11-15', '2024-12-16', '2024-12-15', 10.00, 12.00, 5.00, 0.00, 2.70, 29.70, 'paid'), -- Prepaid
-(12, '2024-10-01', '2024-11-02', '2024-11-01', 50.00, 30.00, 12.00, 0.00, 9.20, 101.20, 'overdue'); -- Travel
+(10, '2024-11-15', '2024-12-16', '2024-12-15', 80.00, 0.00, 0.00, 0.00, 7.75, 87.75, 'paid'), -- Unlimited Premium
+(10, '2024-10-15', '2024-11-16', '2024-11-15', 80.00, 0.00, 0.00, 0.00, 7.75, 87.75, 'overdue'), -- Unlimited Premium
+(11, '2024-10-15', '2024-11-16', '2024-11-15', 10.00, 12.00, 5.00, 0.00, 2.70, 29.70, 'paid'), -- Prepaid
+(12, '2024-10-01', '2024-11-02', '2024-11-01', 50.00, 30.00, 12.00, 0.00, 9.20, 101.20, 'overdue'),-- Travel
+(11, '2024-11-15', '2024-12-16', '2024-12-15', 10.00, 12.00, 5.00, 0.00, 2.70, 29.70, 'unpaid'); -- Prepaid; 
 
 -- Insert data into data_usage
-INSERT INTO data_usage (phone_number, data_used, cost) VALUES
-('15551234567', 500.00, 25.00),
-('15557654321', 2000.00, 100.00),
-('15551234001', 1500.00, 75.00),
-('15551234002', 2000.00, 100.00),
-('15551234003', 500.00, 25.00),
-('15551234004', 3000.00, 150.00),
-('15551234005', 1000.00, 50.00),
-('15551234006', 2500.00, 125.00),
-('15551234007', 1200.00, 60.00),
-('15551234008', 3500.00, 175.00),
-('15551234009', 600.00, 30.00),
-('15551234010', 2000.00, 100.00);
+INSERT INTO data_usage (phone_number, month, data_used, cost) VALUES
+('15551234567', '2024-11-01', 500.00, 25.00),
+('15557654321', '2024-11-01', 2000.00, 100.00),
+('15551234001', '2024-11-01', 1500.00, 75.00),
+('15551234002', '2024-11-01', 2000.00, 0.00),
+('15551234003', '2024-11-01', 500.00, 25.00),
+('15551234004', '2024-11-01', 3000.00, 0),
+('15551234005', '2024-11-01', 1000.00, 50.00),
+('15551234006', '2024-11-01', 2500.00, 0.00),
+('15551234007', '2024-11-01', 1200.00, 60.00),
+('15551234008', '2024-11-01', 3500.00, 175.00),
+('15551234009', '2024-11-01', 600.00, 30.00),
+('15551234010', '2024-11-01', 2000.00, 100.00);
 
-INSERT INTO international_data_usage (phone_number, data_used, flat_rate, cost) VALUES
-('15551234567', 50.00, 1.00, 50.00),
-('15557654321', 30.00, 0.00, 0.00), -- travel plan
-('15551234001', 100.00, 1.00, 100.00),
-('15551234002', 75.00, 1.00, 75.00),
-('15551234003', 60.00, 1.00, 60.00),
-('15551234004', 120.00, 1.00, 120.00),
-('15551234005', 40.00, 0.00, 0.00), --travel plan
-('15551234006', 90.00, 1.00, 90.00),
-('15551234007', 80.00, 1.00, 80.00),
-('15551234008', 150.00, 1.00, 150.00);
+INSERT INTO international_data_usage (phone_number, month, data_used, cost) VALUES
+('15551234567', '2024-11-01', 50.00, 50.00),
+('15557654321', '2024-11-01', 30.00, 0.00), -- Travel plan
+('15551234001', '2024-11-01', 100.00, 100.00),
+('15551234002', '2024-11-01', 75.00, 75.00),
+('15551234003', '2024-11-01', 60.00, 60.00),
+('15551234004', '2024-11-01', 120.00, 120.00),
+('15551234005', '2024-11-01', 40.00, 0.00), -- Travel plan
+('15551234006', '2024-11-01', 90.00, 90.00),
+('15551234007', '2024-11-01', 80.00, 80.00),
+('15551234008', '2024-11-01', 150.00, 150.00);
 
 -- Insert data into international_code
 INSERT INTO international_code (country_code, country_name, rate_per_min, sms_rate) VALUES
@@ -194,31 +212,32 @@ INSERT INTO home_area (area_id, zipcode, city, state, active) VALUES
 INSERT INTO call_log (from_phone_number, area_id, country_code, start_time, end_time, duration, to_number, call_type, roaming_cost, discount, total_cost) VALUES
 ( '15551234567', 1, NULL, '2024-11-01 09:00:00', '2024-11-01 09:15:00', 15, '15559876543', 'domestic', NULL, 0.00, 1.50),-- Domestic
 ( '15551234567', 1, 52, '2024-11-01 10:00:00', '2024-11-01 10:20:00', 20, '525556547890', 'international', 5.00, 0.50, 7.50),-- International
-( '15551234567', 1, NULL, '2024-11-01 11:00:00', '2024-11-01 11:10:00', 10, '15559812345', 'domestic', NULL, 0.20, 1.20), -- Domestic
+( '15551234567', 1, NULL, '2024-11-05 11:00:00', '2024-11-05 11:10:00', 10, '15559812345', 'domestic', NULL, 0.20, 1.20), -- Domestic
 ( '15551234003', 5, 91, '2024-11-02 12:00:00', '2024-11-02 12:30:00', 30, '919876543210', 'international', 7.50, 1.00, 10.50), -- International
 ( '15551234005', 7, NULL, '2024-11-02 14:00:00', '2024-11-02 14:20:00', 20, '15559876543', 'domestic', NULL, 0.50, 2.50), -- Domestic
 ( '15551234007', 9, 33, '2024-11-02 16:00:00', '2024-11-02 16:25:00', 25, '33654321789', 'international', 5.00, 0.75, 7.75), -- International
 ( '15551234009', 12, NULL, '2024-11-03 09:00:00', '2024-11-03 09:30:00', 30, '15559987654', 'domestic', NULL, 0.30, 1.50), -- Domestic
 ( '15551234006', 8, 44, '2024-11-03 15:00:00', '2024-11-03 15:40:00', 40, '44123456789', 'international', 8.00, 1.20, 11.20), -- International
-( '15551234002', 2, NULL, '2024-11-04 10:00:00', '2024-11-04 10:45:00', 45, '15551234567', 'domestic', NULL, 0.45, 2.25), -- Domestic
+( '15551234002', 2, NULL, '2024-11-04 10:00:00', '2024-11-04 10:45:00', 45, '15551234567', 'domestic', NULL, 0.45, 0.00), -- Domestic
 ( '15551234010', 15, 81, '2024-11-04 18:00:00', '2024-11-04 18:15:00', 15, '81876543210', 'international', 4.50, 0.60, 6.10), -- International
-( '15551234004', 4, NULL, '2024-11-05 11:30:00', '2024-11-05 11:50:00', 20, '15559876541', 'domestic', NULL, 0.25, 1.50), -- Domestic
+( '15551234004', 4, NULL, '2024-11-05 11:30:00', '2024-11-05 11:50:00', 20, '15559876541', 'domestic', NULL, 0.25, 0.00), -- Domestic
+( '15551234004', 4, NULL, '2024-11-06 11:30:00', '2024-11-06 11:50:00', 20, '15559876541', 'domestic', NULL, 0.25, 0.00), -- Domestic
 ( '15551234001', 3, 7, '2024-11-05 21:00:00', '2024-11-05 21:20:00', 20, '79876543210', 'international', 6.00, 0.80, 8.80); -- International
 
 -- Insert data into sms_log
-INSERT INTO sms_log (phone_number, time, area_id, char_count, to_number, roaming_cost, discount, total_cost) VALUES
-('15551234567', '2024-11-01 12:00:00', 1, 160, '15559876543', NULL, 0.00, 1.60), -- Domestic
-('15557654321', '2024-11-02 14:30:00', 2, 200, '52559876543', 0.50, 0.10, 2.50), -- International
-('15551234001', '2024-11-03 16:45:00', 3, 120, '44123456789', 0.25, 0.05, 1.20), -- International
-('15551234002', '2024-11-03 18:00:00', 4, 180, '15557654321', NULL, 0.00, 1.80), -- Domestic
-('15551234003', '2024-11-04 10:15:00', 5, 140, '919876543210', 0.30, 0.10, 1.60), -- International
-('15551234004', '2024-11-04 12:50:00', 6, 160, '15559876541', NULL, 0.00, 1.60), -- Domestic
-('15551234005', '2024-11-05 09:30:00', 7, 250, '33654321789', 0.40, 0.15, 2.75), -- International
-('15551234006', '2024-11-05 11:10:00', 8, 300, '15559987654', NULL, 0.00, 3.00), -- Domestic
-('15551234007', '2024-11-06 14:00:00', 9, 100, '79876543210', 0.20, 0.05, 1.15), -- International
-('15551234008', '2024-11-06 15:45:00', 10, 160, '81876543210', NULL, 0.00, 1.60), -- Domestic
-('15551234009', '2024-11-07 08:15:00', 11, 200, '15559812345', NULL, 0.00, 2.00), -- Domestic
-('15551234010', '2024-11-07 20:30:00', 12, 220, '44123456789', 0.35, 0.05, 2.50); -- International
+INSERT INTO sms_log (phone_number, time, area_id, country_code, char_count, to_number, roaming_cost, discount, total_cost) VALUES
+('15551234567', '2024-11-01 12:00:00', 1, NULL, 160, '15559876543', NULL, 0.00, 1.60), -- Domestic
+('15557654321', '2024-11-02 14:30:00', 2, 52, 200, '52559876543', 0.50, 0.10, 2.50), -- International
+('15551234001', '2024-11-03 16:45:00', 3, 7, 120, '44123456789', 0.25, 0.05, 1.20), -- International
+('15551234002', '2024-11-03 18:00:00', 4, NULL, 180, '15557654321', NULL, 0.00, 0.00), -- Domestic
+('15551234003', '2024-11-04 10:15:00', 5, 44, 140, '919876543210', 0.30, 0.10, 1.60), -- International
+('15551234004', '2024-11-04 12:50:00', 6, NULL, 160, '15559876541', NULL, 0.00, 0.00), -- Domestic
+('15551234005', '2024-11-05 09:30:00', 7, 81, 250, '33654321789', 0.40, 0.15, 2.75), -- International
+('15551234006', '2024-11-05 11:10:00', 8, NULL, 300, '15559987654', NULL, 0.00, 0.00), -- Domestic
+('15551234007', '2024-11-06 14:00:00', 9, 7, 100, '79876543210', 0.20, 0.05, 1.15), -- International
+('15551234008', '2024-11-06 15:45:00', 10, NULL, 160, '81876543210', NULL, 0.00, 1.60), -- Domestic
+('15551234009', '2024-11-07 08:15:00', 11, NULL, 200, '15559812345', NULL, 0.00, 2.00), -- Domestic
+('15551234010', '2024-11-07 20:30:00', 12, 52, 220, '44123456789', 0.35, 0.05, 2.50); -- International
 
 -- Insert data into call_transit
 INSERT INTO call_transit ( call_id, from_area, to_area, transit_time) VALUES

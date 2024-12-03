@@ -20,6 +20,16 @@ CREATE TABLE IF NOT EXISTS customer (
     created_time TIMESTAMP
 );
 
+-- Table: transaction
+CREATE TABLE IF NOT EXISTS transaction (
+    transaction_id SERIAL PRIMARY KEY,
+    customer_id INT NOT NULL,
+    amount DECIMAL(15, 2) NOT NULL,
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    transaction_type VARCHAR(50) NOT NULL, -- charge/payment/auto
+    CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE
+);
+
 -- Table: phone_plan (prepaid, postpaid, unlimited, travel)
 CREATE TABLE IF NOT EXISTS phone_plan (
     plan_id SERIAL PRIMARY KEY,
@@ -132,18 +142,21 @@ CREATE TABLE IF NOT EXISTS partner_provider (
 
 -- Table: data_usage
 CREATE TABLE IF NOT EXISTS data_usage (
-    phone_number VARCHAR(20) PRIMARY KEY, -- One row per phone number
+    phone_number VARCHAR(20), 
+    month DATE, -- new row add each mont
     data_used DECIMAL(15, 2) CHECK (data_used >= 0), -- Domestic data usage
     cost DECIMAL(15, 2) CHECK (cost >= 0), -- Cost for domestic usage
+    PRIMARY KEY(phone_number, month),
     FOREIGN KEY (phone_number) REFERENCES phone_number_list(phone_number)
 );
 
 -- Table: international_data_usage
 CREATE TABLE IF NOT EXISTS international_data_usage (
-    phone_number VARCHAR(20) PRIMARY KEY, -- One row per phone number
+    phone_number VARCHAR(20),
+    month DATE, -- new row add each month
     data_used DECIMAL(15, 2) CHECK (data_used >= 0), -- International data usage
-    flat_rate DECIMAL(15, 2) CHECK (flat_rate >= 0), -- Flat rate for international usage
     cost DECIMAL(15, 2) CHECK (cost >= 0), -- Total cost for international usage
+    PRIMARY KEY(phone_number, month),
     FOREIGN KEY (phone_number) REFERENCES phone_number_list(phone_number)
 );
 
@@ -154,7 +167,7 @@ CREATE TABLE IF NOT EXISTS call_log (
     area_id INT,
     country_code INT,
     start_time TIMESTAMP NOT NULL,
-    end_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP,
     duration INT CHECK (duration >= 0),
     to_number VARCHAR(20) NOT NULL,
     call_type VARCHAR(20) NOT NULL CHECK (call_type IN ('domestic', 'international')),
@@ -175,6 +188,7 @@ CREATE TABLE IF NOT EXISTS sms_log (
     phone_number VARCHAR(20) NOT NULL,
     time TIMESTAMP NOT NULL,
     area_id INT,
+    country_code INT,
     char_count INT CHECK (char_count > 0),
     to_number VARCHAR(20) NOT NULL,
     roaming_cost DECIMAL(15, 2) CHECK (roaming_cost >= 0),
@@ -182,7 +196,8 @@ CREATE TABLE IF NOT EXISTS sms_log (
     total_cost DECIMAL(15, 2) CHECK (total_cost >= 0),
     PRIMARY KEY (phone_number, time),
     FOREIGN KEY (phone_number) REFERENCES phone_number_list(phone_number),
-    FOREIGN KEY (area_id) REFERENCES home_area(area_id)
+    FOREIGN KEY (area_id) REFERENCES home_area(area_id),
+    FOREIGN KEY (country_code) REFERENCES international_code(country_code)
 );
 
 -- Table: call_transit (for call while moving between 2 area)
