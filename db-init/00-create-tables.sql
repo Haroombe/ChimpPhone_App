@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS call_log (
     area_id INT,
     country_code INT,
     start_time TIMESTAMP NOT NULL,
-    end_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP,
     duration INT CHECK (duration >= 0),
     to_number VARCHAR(20) NOT NULL,
     call_type VARCHAR(20) NOT NULL CHECK (call_type IN ('domestic', 'international')),
