@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
+import { fetchPlans } from "@/lib/plans";
 
-export default function Navbar({ userId }) {
+export default async function Navbar({ userId }) {
+    const plans = await fetchPlans();
     return (
         <div className="navbar bg-base-100">
             <div className="navbar start">
@@ -17,10 +19,10 @@ export default function Navbar({ userId }) {
                     </Link>
             </div>
             <div className="navbar-center px-48">
-                <Link href={`/call/${userId}`} className="btn btn-ghost text-xl">
+                <Link href={`/user/${userId}/call`} className="btn btn-ghost text-xl">
                     Make Call
                 </Link>
-                <Link href={`/msg/${userId}`} className="btn btn-ghost text-xl">
+                <Link href={`/user/${userId}/msg`} className="btn btn-ghost text-xl">
                     Send Message
                 </Link>
                 {/* Plans Dropdown */}
@@ -30,7 +32,14 @@ export default function Navbar({ userId }) {
                                 <summary className="hover:bg-gray-500 p-2 text-xl">Phone plans</summary>
                                 <ul className="bg-base-100 rounded-t-none">
                                     {/* TODO: MODIFY AND ADD PLANS HERE */}
-                                    <li><a>ADD PLANS HERE</a></li> 
+                                    {plans.map((plan) => (
+                                        <li key={plan.plan_id}>
+                                            <Link href={`/plans/${plan.plan_id}`}>
+                                                {plan.plan_name}
+                                            </Link>
+                                        </li>
+                                    ))}
+
                                 </ul>
                             </details>
                         </li>
