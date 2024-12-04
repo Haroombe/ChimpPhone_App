@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function SimulateSMSForm({onTextSuccess}) {
+export default function SimulateSMSForm({onTextSuccess, user}) {
     const [customers, setCustomers] = useState([]);
     const [countryCodes, setCountryCodes] = useState([]);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -15,11 +15,15 @@ export default function SimulateSMSForm({onTextSuccess}) {
     useEffect(() => {
         async function fetchCustomers() {
             try {
-                const response = await fetch("/api/fetchAllCustomerWithPhone");
+                const customer_phone_response = await fetch(`/api/fetch_phone_number?customerid=1`);
+                const customer_phone_result = await customer_phone_response.json();
+                const response = await fetch(`/api/fetchcustomer?customerid=1`);
                 const result = await response.json();
-
+                result.data[0].phone_number = customer_phone_result.data[0].phone_number;
                 if (result.success) {
+                    console.log(result.data)
                     setCustomers(result.data);
+                    setSelectedCustomer(result.data[0]);
                 } else {
                     console.error("Failed to fetch customers:", result.error);
                 }
@@ -83,7 +87,6 @@ export default function SimulateSMSForm({onTextSuccess}) {
                 setMessage({ type: "success", text: "SMS sent successfully!" });
                 setToNumber("");
                 setMessageText("");
-                setSelectedCustomer(null); // Reset the customer selection
                 setCountryCode("+1"); // Reset country code to default
                 onTextSuccess();
             } else {

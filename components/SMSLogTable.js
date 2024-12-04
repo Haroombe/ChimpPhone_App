@@ -2,14 +2,14 @@
 import { useEffect, useState, useRef } from "react";
 import { DataTable } from "simple-datatables";
 
-export default function SMSLogTable({ refreshTrigger }) {
+export default function SMSLogTable({ refreshTrigger, user }) {
     const [smsLogs, setSmsLogs] = useState([]);
     const dataTableRef = useRef(null); // Reference to the DataTable instance
 
     useEffect(() => {
         async function fetchSmsLogs() {
             try {
-                const response = await fetch("/api/fetchSMSLog");
+                const response = await fetch("/api/fetchcustomersmslog?customerid=1");
                 const result = await response.json();
 
                 if (result.success) {

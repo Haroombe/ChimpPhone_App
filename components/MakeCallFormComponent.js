@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function MakeCallFormComponent() {
+export default function MakeCallFormComponent({onTextSuccess}) {
     const [customers, setCustomers] = useState([]);
     const [countryCodes, setCountryCodes] = useState([]);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -11,15 +11,18 @@ export default function MakeCallFormComponent() {
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    // Fetch active customers with their phone numbers
     useEffect(() => {
         async function fetchCustomers() {
             try {
-                const response = await fetch("/api/fetchAllCustomerWithPhone");
+                const customer_phone_response = await fetch(`/api/fetch_phone_number?customerid=1`);
+                const customer_phone_result = await customer_phone_response.json();
+                const response = await fetch(`/api/fetchcustomer?customerid=1`);
                 const result = await response.json();
-
+                result.data[0].phone_number = customer_phone_result.data[0].phone_number;
                 if (result.success) {
+                    console.log(result.data)
                     setCustomers(result.data);
+                    setSelectedCustomer(result.data[0]);
                 } else {
                     console.error("Failed to fetch customers:", result.error);
                 }
@@ -83,10 +86,10 @@ export default function MakeCallFormComponent() {
 
             if (result.success) {
                 setMessage({ type: "success", text: result.message });
-                setSelectedCustomer(null); // Reset the selection
                 setToNumber("");
                 setCountryCode("+1"); // Reset to US/Canada code
                 setDuration(""); // Reset duration
+                onTextSuccess();
             } else {
                 setMessage({ type: "error", text: result.error });
             }
