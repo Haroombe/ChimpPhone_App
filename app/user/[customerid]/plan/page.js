@@ -198,50 +198,50 @@ export default function CurrentPlanPage({ params }) {
                 <div className="container mx-auto px-4">
                     <div className="bg-white shadow rounded-lg p-6">
                         <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                            Plan: {planDetails[0]?.plan_name || "N/A"}
+                            Plan: {planDetails[0]?.plan_name || "0.00"}
                         </h2>
 
                         <div className="divide-y divide-gray-200">
                             <div className="py-4 flex justify-between">
                                 <span className="text-gray-700">Rate per Minute</span>
                                 <span className="text-gray-900 font-medium">
-                                    ${planDetails[0]?.rate_per_minute || "N/A"}
+                                    ${planDetails[0]?.rate_per_minute || "0.00"}
                                 </span>
                             </div>
                             <div className="py-4 flex justify-between">
                                 <span className="text-gray-700">Rate per MB</span>
                                 <span className="text-gray-900 font-medium">
-                                    ${planDetails[0]?.rate_per_MBs || "N/A"}
+                                    ${planDetails[0]?.rate_per_MBs || "0.00"}
                                 </span>
                             </div>
                             <div className="py-4 flex justify-between">
                                 <span className="text-gray-700">Rate per Character</span>
                                 <span className="text-gray-900 font-medium">
-                                    ${planDetails[0]?.rate_per_char || "N/A"}
+                                    ${planDetails[0]?.rate_per_char || "0.00"}
                                 </span>
                             </div>
                             <div className="py-4 flex justify-between">
                                 <span className="text-gray-700">Data Soft Cap (MBs)</span>
                                 <span className="text-gray-900 font-medium">
-                                    {planDetails[0]?.MBs_soft_cap || "N/A"} MB
+                                    {planDetails[0]?.MBs_soft_cap || "0.00"} MB
                                 </span>
                             </div>
                             <div className="py-4 flex justify-between">
                                 <span className="text-gray-700">International Rate</span>
                                 <span className="text-gray-900 font-medium">
-                                    ${planDetails[0]?.international_rate || "N/A"}
+                                    ${planDetails[0]?.international_rate || "0.00"}
                                 </span>
                             </div>
                             <div className="py-4 flex justify-between">
                                 <span className="text-gray-700">Plan Type</span>
                                 <span className="text-gray-900 font-medium">
-                                    {planDetails[0]?.plan_type || "N/A"}
+                                    {planDetails[0]?.plan_type || "0.00"}
                                 </span>
                             </div>
                             <div className="py-4 flex justify-between">
                                 <span className="text-gray-700">Monthly Charge</span>
                                 <span className="text-gray-900 font-medium">
-                                    ${planDetails[0]?.monthly_charge || "N/A"}
+                                    ${planDetails[0]?.monthly_charge || "0.00"}
                                 </span>
                             </div>
                         </div>
