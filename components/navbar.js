@@ -30,18 +30,11 @@ export default function Navbar({ userId, plans }) {
 
                 {/* Center Links */}
                 <div className="hidden md:flex space-x-4">
-                    <Link href={`/user/${userId}/call`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
-                        Make Call
-                    </Link>
-                    <Link href={`/user/${userId}/msg`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
-                        Send Message
-                    </Link>
+
                     <Link href={`/user/${userId}/change_plan_process`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
                         Phone Plans
                     </Link>
-                    <Link href="/about" className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
-                        About
-                    </Link>
+
                 </div>
 
                 {/* Profile Section */}
@@ -76,12 +69,7 @@ export default function Navbar({ userId, plans }) {
             {/* Mobile Menu */}
             <div className="md:hidden mt-4">
                 <div className="flex flex-col space-y-2">
-                    <Link href={`/user/${userId}/call`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
-                        Make Call
-                    </Link>
-                    <Link href={`/user/${userId}/msg`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
-                        Send Message
-                    </Link>
+                   
                     <Link href={`/user/${userId}/change_plan_process`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
                         Phone Plans
                     </Link>
