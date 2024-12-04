@@ -173,6 +173,12 @@ export default function PlansPage({ params }) {
                                         >
                                             Transaction
                                         </a>
+                                        <a
+                                            href={`/admin`}
+                                            className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white"
+                                        >
+                                            admin
+                                        </a>
                                     </div>
                                 </div>
                             </div>

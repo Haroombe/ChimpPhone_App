@@ -1,10 +1,10 @@
+'use client';
+
 import Link from "next/link";
 import Image from "next/image";
 
-import { fetchPlans } from "@/lib/plans";
 
-export default async function Navbar({ userId }) {
-    const plans = await fetchPlans();
+export default function Navbar({ userId,plans }) {
 
     return (
         <div className="navbar bg-base-100">

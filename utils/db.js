@@ -1,6 +1,6 @@
 // utils/db.js
 
-import { Pool } from 'pg';
+import { Pool, Client } from 'pg';
 import winston from 'winston';
 
 // Configure Winston logger
@@ -27,11 +27,19 @@ pool.on('connect', () => {
 });
 
 // Override pool.query to log queries
-const originalQuery = pool.query.bind(pool);
+const originalPoolQuery = pool.query.bind(pool);
 pool.query = (...args) => {
   const queryText = args[0];
   logger.info(queryText);
-  return originalQuery(...args);
+  return originalPoolQuery(...args);
+};
+
+// Override Client.query to log queries
+const originalClientQuery = Client.prototype.query;
+Client.prototype.query = function (...args) {
+  const queryText = args[0];
+  logger.info(queryText);
+  return originalClientQuery.apply(this, args);
 };
 
 export { pool };
