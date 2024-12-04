@@ -3,24 +3,22 @@
 import Image from "next/image";
 import { use, useState, useEffect } from "react";
 import MakeCallFormComponent from "@/components/makeCallFormComponent";
-export default function SettingPage({ params }) {
+export default function makecall({ params }) {
   const unwrappedParams = use(params);
   const { customerid } = unwrappedParams;
 //   const [customerData, setCustomerData] = useState(null);
 //   const [bankData, setBankAccounts] = useState(null);
 //   const [PrimarybankData, setPrimaryBankAccount] = useState(null);
 //   const [phoneData, setPhone] = useState(null);
+
   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [formData, setFormData] = useState({});
-//   const [editing, setEditing] = useState({}); // Tracks which sections are being edited
-//   const [successMessage, setSuccessMessage] = useState(null);
-//   const [errorEmail, setErrorEmail] = useState(null);
-//   const [successMessageEmail, setSuccessMessageEmail] = useState(null);
-//   const [successMessageProfile, setSuccessMessageProfile] = useState(null); 
-//   const [errorMessageProfile, setErrorMessageProfile] = useState(null);
-//   const [successMessageBank, setSuccessMessageBank] = useState(null); // Track success messages
-//   const [errorMessageBank, setErrorMessageBank] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
+
+  const handleRefresh = () => {
+      console.log("Toggling refreshTrigger...");
+      setRefreshTrigger((prev) => !prev); // Toggle to trigger refresh
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -337,7 +335,7 @@ export default function SettingPage({ params }) {
       <main className="relative -mt-60">
         <div className="container mx-auto px-4 space-y-6">
             <div className="bg-white shadow rounded-lg p-6">
-                <MakeCallFormComponent />
+                <MakeCallFormComponent  onTextSuccess = {handleRefresh}/>
             </div>
         </div>
       </main>

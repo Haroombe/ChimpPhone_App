@@ -12,7 +12,7 @@ export default function Navbar({ userId, plans }) {
     };
 
     return (
-        <nav className="bg-sky-700 p-4">
+        <nav className="bg-black p-4">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
                 
                 {/* Logo Section */}
@@ -31,11 +31,14 @@ export default function Navbar({ userId, plans }) {
                 {/* Center Links */}
                 <div className="hidden md:flex space-x-4">
 
-                    <Link href={`/user/${userId}/change_plan_process`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                    <Link href={`/user/${userId}/change_plan_process`} className="hover:bg-sky-800 bg-sky-600 rounded-md py-2 px-3 text-sm font-medium text-white">
                         Phone Plans
                     </Link>
-                    <Link href={`/user/${userId}/makecall`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                    <Link href={`/user/${userId}/makecall`} className="hover:bg-sky-800 bg-sky-600 rounded-md py-2 px-3 text-sm font-medium text-white">
                         Make a call
+                    </Link>
+                    <Link href={`/user/${userId}/makemsg`} className="hover:bg-sky-800 bg-sky-600 rounded-md py-2 px-3 text-sm font-medium text-white">
+                        Send a message
                     </Link>
                 </div>
 
