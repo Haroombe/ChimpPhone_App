@@ -4,6 +4,8 @@ import { fetchPlans } from '@/app/lib/plans';
 
 export default async function Home({ }) {
   const plans = await fetchPlans();
+  const tempuserid = '1'
+
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20">
       {/* Company Title Card */}
@@ -45,10 +47,10 @@ export default async function Home({ }) {
                 Type: {plan.plan_type.charAt(0).toUpperCase() + plan.plan_type.slice(1)}
               </p>
               <p className="text-lg mb-4">
-                Monthly Charge: ${plan.monthly_charge || 'N/A'}
+                Monthly Charge: ${plan.monthly_charge || '0.00'}
               </p>
               {/* Add more plan details as needed */}
-              <a href={`/plans/${plan.plan_id}`} className="text-blue-600 hover:underline">
+              <a href={`/user/${tempuserid}/change_plan_process`} className="text-blue-600 hover:underline">
                 View Details →
               </a>
             </div>

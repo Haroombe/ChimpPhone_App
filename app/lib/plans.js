@@ -7,7 +7,6 @@ export async function fetchPlans() {
   try {
     console.log(pool)
     const result = await pool.query('SELECT * FROM phone_plan;');
-    console.log(result.rows);
 
     return result.rows
   } catch (error) {
