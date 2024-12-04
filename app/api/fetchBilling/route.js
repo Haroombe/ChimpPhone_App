@@ -40,7 +40,9 @@ export async function GET(req) {
             JOIN phone_plan p ON s.plan_id = p.plan_id
             WHERE c.customer_id = $1
             AND s.active = TRUE
-            AND CURRENT_DATE BETWEEN b.start_date AND b.end_date;`,
+            ORDER BY b.start_date DESC 
+            LIMIT 1;
+            `,
             [customerid]
         );
 

@@ -38,7 +38,8 @@ export async function POST(req) {
             const getBillingCycleQuery = `
                 SELECT bc.total_charge, bc.status
                 FROM billing_cycle bc
-                WHERE bc.subscription_id = $1 AND bc.start_date = $2 AND bc.status = 'unpaid'
+                WHERE bc.subscription_id = $1 AND bc.start_date = $2 
+                AND (bc.status = 'unpaid' OR bc.status = 'overdue')
                 LIMIT 1;
             `;
             const billingResult = await client.query(getBillingCycleQuery, [subscription_id, start_date]);
@@ -97,7 +98,7 @@ export async function POST(req) {
             await client.query('END'); // END transaction
 
             return NextResponse.json(
-                { success: true, message: 'Payment successful, billing cycle updated, and company bank credited.' },
+                { success: true, message: 'Payment successful, billing cycle updated' },
                 { status: 200 }
             );
         } catch (error) {

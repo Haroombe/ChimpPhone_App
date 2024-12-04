@@ -29,6 +29,7 @@ export default function BillingPage({ params }) {
                     throw new Error("Failed to fetch billing data");
                 }
                 const billingResult = await billingResponse.json();
+                //console.log(billingResult);
                 setBillingData(billingResult.data);
 
                 // Fetch unpaid bills

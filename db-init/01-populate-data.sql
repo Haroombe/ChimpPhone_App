@@ -63,11 +63,11 @@ INSERT INTO phone_number_list (phone_number, customer_id, is_primary, added_date
 
 -- Insert data into phone_plan
 INSERT INTO phone_plan ( plan_name, rate_per_minute, rate_per_MB, rate_per_char, MBs_soft_cap, MBs_hard_cap, plan_type, monthly_charge, international_rate) VALUES
-('Prepaid', 0.10, 0.05, 0.01, 20000.00, 8000.00, 'prepaid', NULL, 1.0),
-( 'Postpaid', 0.08, 0.04, 0.01, 20000.00, 8000.00, 'postpaid', NULL, 1.0),
-( 'Unlimited Basic', NULL, NULL, NULL, 25000.00, 10000.00, 'unlimited', 50.00, 1.0),
-( 'Unlimited Premium', NULL, NULL, NULL, 35000.00, 12000.00, 'unlimited', 80.00, 1.0),
-( 'EasyTravel', 0.20, NULL, NULL, 20000.00, 30000.00, 'travel', 50.00, 0.00);
+('Prepaid', 0.10, 0.05, 0.01, 20000.00, 8000.00, 'prepaid', 0.00, 1.0),
+( 'Postpaid', 0.08, 0.04, 0.01, 20000.00, 8000.00, 'postpaid', 0.00, 1.0),
+( 'Unlimited Basic', 0.00, 0.00, 0.00, 25000.00, 10000.00, 'unlimited', 50.00, 1.0),
+( 'Unlimited Premium', 0.00, 0.00, 0.00, 35000.00, 12000.00, 'unlimited', 80.00, 1.0),
+( 'EasyTravel', 0.20, 0.00, 0.00, 20000.00, 30000.00, 'travel', 50.00, 0.00);
 
 -- Insert data into promotion
 INSERT INTO promotion ( promotion_name, discount_code, discount_type, discount_value, start_date, end_date, min_subscription_duration, min_spending, applicable_plan_id, previous_provider_require) VALUES
