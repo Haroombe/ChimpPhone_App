@@ -34,7 +34,9 @@ export default function Navbar({ userId, plans }) {
                     <Link href={`/user/${userId}/change_plan_process`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
                         Phone Plans
                     </Link>
-
+                    <Link href={`/user/${userId}/makecall`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                        Make a call
+                    </Link>
                 </div>
 
                 {/* Profile Section */}
