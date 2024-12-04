@@ -212,3 +212,76 @@ CREATE TABLE IF NOT EXISTS call_transit (
     FOREIGN KEY (to_area) REFERENCES home_area(area_id),
     CONSTRAINT check_area_difference CHECK (from_area <> to_area)
 );
+
+-- Indexing Part
+
+-- Indexes for customer
+CREATE INDEX IF NOT EXISTS idx_customer_first_name ON customer(first_name);
+CREATE INDEX IF NOT EXISTS idx_customer_last_name ON customer(last_name);
+CREATE INDEX IF NOT EXISTS idx_customer_email ON customer(email);
+CREATE INDEX IF NOT EXISTS idx_customer_created_time ON customer(created_time);
+
+-- Indexes for transaction
+CREATE INDEX IF NOT EXISTS idx_transaction_customer_id ON transaction(customer_id);
+CREATE INDEX IF NOT EXISTS idx_transaction_transaction_date ON transaction(transaction_date);
+CREATE INDEX IF NOT EXISTS idx_transaction_transaction_type ON transaction(transaction_type);
+
+-- Indexes for phone_plan
+CREATE INDEX IF NOT EXISTS idx_phone_plan_plan_id ON phone_plan(plan_id);
+CREATE INDEX IF NOT EXISTS idx_phone_plan_name ON phone_plan(plan_name);
+CREATE INDEX IF NOT EXISTS idx_phone_plan_plan_type ON phone_plan(plan_type);
+CREATE INDEX IF NOT EXISTS idx_phone_plan_monthly_charge ON phone_plan(monthly_charge);
+
+-- Indexes for promotion
+CREATE INDEX IF NOT EXISTS idx_promotion_start_date ON promotion(start_date);
+CREATE INDEX IF NOT EXISTS idx_promotion_end_date ON promotion(end_date);
+CREATE INDEX IF NOT EXISTS idx_promotion_applicable_plan_id ON promotion(applicable_plan_id);
+
+-- Indexes for bank_account
+CREATE INDEX IF NOT EXISTS idx_bank_account_customer_id ON bank_account(customer_id);
+CREATE INDEX IF NOT EXISTS idx_bank_account_balance ON bank_account(balance);
+CREATE INDEX IF NOT EXISTS idx_bank_account_card_number ON bank_account(card_number);
+
+-- Indexes for phone_number_list
+CREATE INDEX IF NOT EXISTS idx_phone_number_list_phone_number ON phone_number_list(phone_number);
+CREATE INDEX IF NOT EXISTS idx_phone_number_list_customer_is_primary ON phone_number_list(customer_id, is_primary);
+
+-- Indexes for subscription
+CREATE INDEX IF NOT EXISTS idx_subscription_customer_id ON subscription(customer_id);
+CREATE INDEX IF NOT EXISTS idx_subscription_plan_id_active ON subscription(plan_id, active);
+CREATE INDEX IF NOT EXISTS idx_subscription_start_date ON subscription(start_date);
+
+-- Indexes for billing_cycle
+CREATE INDEX IF NOT EXISTS idx_billing_cycle_subscription_status ON billing_cycle(subscription_id, status);
+
+-- Indexes for home_area
+CREATE INDEX IF NOT EXISTS idx_home_area_zipcode ON home_area(zipcode);
+CREATE INDEX IF NOT EXISTS idx_home_area_active ON home_area(active);
+
+-- Indexes for international_code
+CREATE INDEX IF NOT EXISTS idx_international_code_country_name ON international_code(country_name);
+
+-- Indexes for partner_provider
+CREATE INDEX IF NOT EXISTS idx_partner_provider_country_code ON partner_provider(country_code);
+
+-- Indexes for data_usage
+CREATE INDEX IF NOT EXISTS idx_data_usage_phone_month ON data_usage(phone_number, month);
+
+-- Indexes for international_data_usage
+CREATE INDEX IF NOT EXISTS idx_international_data_usage_phone_month ON international_data_usage(phone_number, month);
+
+-- Indexes for call_log
+CREATE INDEX IF NOT EXISTS idx_call_log_call_id ON call_log(call_id);
+CREATE INDEX IF NOT EXISTS idx_call_log_end_time ON call_log(end_time);
+CREATE INDEX IF NOT EXISTS idx_call_log_from_phone_number ON call_log(from_phone_number);
+CREATE INDEX IF NOT EXISTS idx_call_log_start_time ON call_log(start_time);
+
+-- Indexes for sms_log
+CREATE INDEX IF NOT EXISTS idx_sms_log_time ON sms_log(time);
+CREATE INDEX IF NOT EXISTS idx_sms_log_area_id ON sms_log(area_id);
+CREATE INDEX IF NOT EXISTS idx_sms_log_country_code ON sms_log(country_code);
+
+-- Indexes for call_transit
+CREATE INDEX IF NOT EXISTS idx_call_transit_call_id ON call_transit(call_id);
+CREATE INDEX IF NOT EXISTS idx_call_transit_from_area ON call_transit(from_area);
+CREATE INDEX IF NOT EXISTS idx_call_transit_to_area ON call_transit(to_area);
