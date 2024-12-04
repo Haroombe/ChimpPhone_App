@@ -98,7 +98,7 @@ export default function SimulateSMSForm({onTextSuccess}) {
     };
 
     return (
-        <div className="max-w-lg w-full shadow-2xl  bg-white rounded-lg dark:bg-gray-800 p-6">
+        <div className="max-w-lg w-full bg-white rounded-lg shadow dark:bg-gray-800 p-6">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                 Simulate Sending an SMS
             </h2>
