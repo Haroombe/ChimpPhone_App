@@ -1,74 +1,95 @@
 'use client';
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+export default function Navbar({ userId, plans }) {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-export default function Navbar({ userId,plans }) {
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
 
     return (
-        <div className="navbar bg-base-100">
-            <div className="navbar start">
-                    <Link href="/" className="btn">
-                        <div className="flex items-center">
-                            <Image
-                                alt="ChimpPhone Logo"
-                                src="/chimpphone_logo.png"
-                                width={40}
-                                height={40}
-                            />
-                        </div>
+        <nav className="bg-sky-700 p-4">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+                
+                {/* Logo Section */}
+                <div className="flex items-center">
+                    <Link href="/" className="flex items-center">
+                        <Image
+                            alt="ChimpPhone Logo"
+                            src="/chimpphone_logo.png"
+                            width={40}
+                            height={40}
+                        />
+                        <span className="ml-2 text-white text-lg font-semibold">ChimpPhone</span>
                     </Link>
-            </div>
-            <div className="navbar-center px-48">
-                <Link href={`/user/${userId}/call`} className="btn btn-ghost text-xl">
-                    Make Call
-                </Link>
-                <Link href={`/user/${userId}/msg`} className="btn btn-ghost text-xl">
-                    Send Message
-                </Link>
-                {/* Plans Dropdown */}
-                <Link href={`/user/${userId}/change_plan_process`} className="btn btn-ghost text-xl">
-                   Phone Plans
-                </Link>
-                <Link href="/about" className="btn btn-ghost text-xl">
-                About
-                </Link>
-            </div>
+                </div>
 
-            <div className="navbar-end">
-     
-                {/* Profile Dropdown */}
+                {/* Center Links */}
+                <div className="hidden md:flex space-x-4">
+                    <Link href={`/user/${userId}/call`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                        Make Call
+                    </Link>
+                    <Link href={`/user/${userId}/msg`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                        Send Message
+                    </Link>
+                    <Link href={`/user/${userId}/change_plan_process`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                        Phone Plans
+                    </Link>
+                    <Link href="/about" className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                        About
+                    </Link>
+                </div>
 
-                <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                        <div className="w-10 rounded-full">
-                            <Image
-                                alt="Profile Avatar"
-                                src="/blank-profile-picture-973460_1280.png"
-                                width={40}
-                                height={40}
-                            />
-                        </div>
-                    </div>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+                {/* Profile Section */}
+                <div className="relative">
+                    <button
+                        onClick={toggleDropdown}
+                        className="flex items-center text-sm bg-sky-700 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-700 focus:ring-white"
                     >
-                        {/* TODO: Add check to see if user logged in, if not display sign in button else display user profile link */}
-                        <li>
-                            <Link href={`/user/${userId}/setting`}>
+                        <Image
+                            alt="Profile Avatar"
+                            src="/blank-profile-picture-973460_1280.png"
+                            width={40}
+                            height={40}
+                            className="rounded-full"
+                        />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isDropdownOpen && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                            <Link href={`/user/${userId}/setting`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 Profile
                             </Link>
-                        </li>
-                        <li>
-                            <Link href="/logout">
+                            <Link href="/logout" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 Logout
                             </Link>
-                        </li>
-                    </ul>
+                        </div>
+                    )}
                 </div>
             </div>
-        </div>
+
+            {/* Mobile Menu */}
+            <div className="md:hidden mt-4">
+                <div className="flex flex-col space-y-2">
+                    <Link href={`/user/${userId}/call`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                        Make Call
+                    </Link>
+                    <Link href={`/user/${userId}/msg`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                        Send Message
+                    </Link>
+                    <Link href={`/user/${userId}/change_plan_process`} className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                        Phone Plans
+                    </Link>
+                    <Link href="/about" className="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">
+                        About
+                    </Link>
+                </div>
+            </div>
+        </nav>
     );
 }
