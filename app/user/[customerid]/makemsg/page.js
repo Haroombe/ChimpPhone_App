@@ -130,7 +130,7 @@ export default function SettingPage({ params }) {
       <main className="relative -mt-60">
         <div className="container mx-auto px-4 py-4 space-y-6">
             <div className="bg-white shadow-2xl place-items-center rounded-lg p-6">
-                <SimulateSMSForm onTextSuccess = {handleRefresh}/>
+                <SimulateSMSForm onTextSuccess={handleRefresh}/>
             </div>
         </div>
         <div className="container mx-auto px-4 space-y-6">
